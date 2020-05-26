@@ -1,0 +1,16 @@
+server:
+  port: 8081
+
+spring:
+  application:
+    name: eureka-server
+
+eureka:
+  # Eureka 服务器 IP 地址
+  instance:
+    hostname: localhost
+  client:
+    # 是否将自己的信息注册到 Eureka 服务器上供其它服务发现，默认 true
+    register-with-eureka: false
+    # 当前实例是否获取 Eureka 服务器上注册表的注册信息（即服务），默认 true
+    fetch-registry: false

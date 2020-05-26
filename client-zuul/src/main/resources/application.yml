@@ -1,0 +1,20 @@
+server:
+  port: 8086
+
+spring:
+  application:
+    name: client-zuul
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8081/eureka
+
+zuul:
+  routes:
+    # ribbon 和 feign 表示以配置的 path 开头的请求跳转到服务 - serviceId
+    ribbon:
+      path: /ribbon/**
+      serviceId: client-ribbon
+    feign:
+      path: /feign/**
+      serviceId: client-feign

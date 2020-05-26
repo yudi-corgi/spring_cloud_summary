@@ -1,0 +1,16 @@
+server:
+  port: 8085
+spring:
+  application:
+    name: client-feign
+
+eureka:
+  client:
+    service-url:
+      # 服务注册中心地址
+      defaultZone: http://localhost:8081/eureka
+
+feign:
+  hystrix:
+    # feign 集成了 Hystrix，但 D版本后默认为 false 关闭，需配置开启
+    enabled: true

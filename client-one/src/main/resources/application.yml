@@ -1,0 +1,12 @@
+server:
+  port: 8082
+
+spring:
+  application:
+    name: client-one
+
+eureka:
+  client:
+    # 表示服务要注册到哪个注册中心，默认是 http://IP:Port/eureka/
+    service-url:
+      defaultZone: http://localhost:8081/eureka
