@@ -8,17 +8,17 @@ spring:
     config:
       server:
         git:
-          # Git ²Ö¿âµÄµØÖ·
+          # Git ä»“åº“çš„åœ°å€
           uri: https://github.com/1019509861/spring_cloud_summary/
-          # ²Ö¿âÏÂÅäÖÃÎÄ¼şµÄÂ·¾¶
+          # ä»“åº“ä¸‹é…ç½®æ–‡ä»¶çš„è·¯å¾„
           search-paths: config
-          # ¹«ÓĞ²Ö¿â¿É²»Ğ´ÕË»§ÃÜÂë£¬Ë½ÓĞÔòĞèÒª
+          # å…¬æœ‰ä»“åº“å¯ä¸å†™è´¦æˆ·å¯†ç ï¼Œç§æœ‰åˆ™éœ€è¦
           username:
           password:
-          # basedir: ¿ÉÒÔĞ´±¾µØ²Ö¿âµÄµØÖ·£¬Èç E:\project\
-      # Ê¹ÓÃµÄ²Ö¿â·ÖÖ§
+          # basedir: å¯ä»¥å†™æœ¬åœ°ä»“åº“çš„åœ°å€ï¼Œå¦‚ E:\project\
+      # ä½¿ç”¨çš„ä»“åº“åˆ†æ”¯
       label: master
-# ×¢²áµ½ Eureka ·şÎñ×¢²áÖĞĞÄ
+# æ³¨å†Œåˆ° Eureka æœåŠ¡æ³¨å†Œä¸­å¿ƒ
 eureka:
   client:
     service-url:

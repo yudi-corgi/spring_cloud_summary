@@ -1,0 +1,19 @@
+spring:
+  rabbitmq:
+    host: localhost
+    port: 5672
+    username: guest
+    password: guest
+  cloud:
+    bus:
+      enabled: true
+      trace:
+        enabled: true
+# 暴露监控端点，基于 actuator，此处暴露 bus-refresh 接口,"*" 为全部
+# 通过 POST 向 config-client 服务发送请求 http://IP:Port/actuator/bus-refresh ,
+#  接口会发送消息给消息总线，即 MQ Broker，MQ Broker 会将消息广播给总线上的所有服务
+management:
+  endpoints:
+    web:
+      exposure:
+        include: bus-refresh
