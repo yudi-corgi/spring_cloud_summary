@@ -11,7 +11,7 @@ eureka:
 
 zuul:
   routes:
-    # ribbon ºÍ feign ±íÊ¾ÒÔÅäÖÃµÄ path ¿ªÍ·µÄÇëÇóÌø×ªµ½·şÎñ - serviceId
+    # ribbon å’Œ feign è¡¨ç¤ºä»¥é…ç½®çš„ path å¼€å¤´çš„è¯·æ±‚è·³è½¬åˆ°ç›¸åº”æœåŠ¡ - serviceId
     ribbon:
       path: /ribbon/**
       serviceId: client-ribbon

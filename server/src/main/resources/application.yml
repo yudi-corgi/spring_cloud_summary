@@ -6,11 +6,11 @@ spring:
     name: eureka-server
 
 eureka:
-  # Eureka ·şÎñÆ÷ IP µØÖ·
+  # Eureka æœåŠ¡å™¨ IP åœ°å€
   instance:
     hostname: localhost
   client:
-    # ÊÇ·ñ½«×Ô¼ºµÄĞÅÏ¢×¢²áµ½ Eureka ·şÎñÆ÷ÉÏ¹©ÆäËü·şÎñ·¢ÏÖ£¬Ä¬ÈÏ true
+    # æ˜¯å¦å°†è‡ªå·±çš„ä¿¡æ¯æ³¨å†Œåˆ° Eureka æœåŠ¡å™¨ä¸Šä¾›å…¶å®ƒæœåŠ¡å‘ç°ï¼Œé»˜è®¤ true
     register-with-eureka: false
-    # µ±Ç°ÊµÀıÊÇ·ñ»ñÈ¡ Eureka ·şÎñÆ÷ÉÏ×¢²á±íµÄ×¢²áĞÅÏ¢£¨¼´·şÎñ£©£¬Ä¬ÈÏ true
+    # å½“å‰å®ä¾‹æ˜¯å¦è·å– Eureka æœåŠ¡å™¨ä¸Šæ³¨å†Œè¡¨çš„æ³¨å†Œä¿¡æ¯ï¼ˆå³æœåŠ¡ï¼‰ï¼Œé»˜è®¤ true
     fetch-registry: false
