@@ -26,7 +26,8 @@
         <module>client-zuul</module>
         <module>config-server</module>
         <module>config-client</module>
-        <module>zipkin-client</module>
+        <module>zipkin-client-one</module>
+        <module>zipkin-client-two</module>
     </modules>
 
     <properties>
