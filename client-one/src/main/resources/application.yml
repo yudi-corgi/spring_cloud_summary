@@ -7,6 +7,6 @@ spring:
 
 eureka:
   client:
-    # 表示服务要注册到哪个注册中心，默认是 http://IP:Port/eureka/
+    # 琛ㄧず鏈嶅姟瑕佹敞鍐屽埌鍝釜娉ㄥ唽涓績锛岄粯璁ゆ槸 http://IP:Port/eureka/
     service-url:
       defaultZone: http://localhost:8081/eureka

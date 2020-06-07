@@ -1,0 +1,39 @@
+spring:
+  application:
+    name: hystrix-turbine
+server:
+  port: 8099
+feign:
+  hystrix:
+    # feign 集成了 Hystrix，但 D版本后默认为 false 关闭，需配置开启
+    enabled: true
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8081/eureka/
+#  instance:
+#    metadata-map: ABC
+# actuator
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+      cors:
+        allowed-origins: "*"
+        allowed-methods: "*"
+# turbine
+turbine:
+  app-config: client-ribbon,client-one  #配置Eureka中的serviceId列表，表明监控哪些服务
+  aggregator:
+    cluster-config: default   #指定聚合哪些集群，多个使用”,”分割，默认为default
+  # 1. clusterNameExpression指定集群名称，默认表达式appName；
+  # 此时：turbine.aggregator.cluster-config需要配置想要监控的应用名称；
+  # 2. 当clusterNameExpression: default 时，turbine.aggregator.cluster-config 可以不写，因为默认就是 default；
+  # 3. 当clusterNameExpression: metadata[‘cluster’]时，
+  # 假设想要监控的应用配置了 eureka.instance.metadata-map.cluster: ABC，
+  # 则需要配置，同时turbine.aggregator.cluster-Config: ABC
+  cluster-name-expression: new String("default")
+#  combine-host-port: true
+#  instanceUrlSuffix:
+#    default: actuator/hystrix.stream
