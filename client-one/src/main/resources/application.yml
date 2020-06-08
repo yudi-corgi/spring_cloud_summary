@@ -9,4 +9,12 @@ eureka:
   client:
     # 表示服务要注册到哪个注册中心，默认是 http://IP:Port/eureka/
     service-url:
-      defaultZone: http://localhost:8081/eureka
+      defaultZone: http://admin:admin123@localhost:8081/eureka
+management:
+  endpoint:
+    shutdown:
+      enabled: true
+  endpoints:
+    web:
+      exposure:
+        include: "*"
