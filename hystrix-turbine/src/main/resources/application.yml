@@ -5,12 +5,12 @@ server:
   port: 8099
 feign:
   hystrix:
-    # feign ¼¯³ÉÁË Hystrix£¬µ« D°æ±¾ºóÄ¬ÈÏÎª false ¹Ø±Õ£¬ĞèÅäÖÃ¿ªÆô
+    # feign é›†æˆäº† Hystrixï¼Œä½† Dç‰ˆæœ¬åé»˜è®¤ä¸º false å…³é—­ï¼Œéœ€é…ç½®å¼€å¯
     enabled: true
 eureka:
   client:
     service-url:
-      defaultZone: http://localhost:8081/eureka/
+      defaultZone: http://admin:admin123@localhost:8081/eureka/
 #  instance:
 #    metadata-map: ABC
 # actuator
@@ -24,15 +24,15 @@ management:
         allowed-methods: "*"
 # turbine
 turbine:
-  app-config: client-ribbon,client-one  #ÅäÖÃEurekaÖĞµÄserviceIdÁĞ±í£¬±íÃ÷¼à¿ØÄÄĞ©·şÎñ
+  app-config: client-ribbon,client-one  #é…ç½®Eurekaä¸­çš„serviceIdåˆ—è¡¨ï¼Œè¡¨æ˜ç›‘æ§å“ªäº›æœåŠ¡
   aggregator:
-    cluster-config: default   #Ö¸¶¨¾ÛºÏÄÄĞ©¼¯Èº£¬¶à¸öÊ¹ÓÃ¡±,¡±·Ö¸î£¬Ä¬ÈÏÎªdefault
-  # 1. clusterNameExpressionÖ¸¶¨¼¯ÈºÃû³Æ£¬Ä¬ÈÏ±í´ïÊ½appName£»
-  # ´ËÊ±£ºturbine.aggregator.cluster-configĞèÒªÅäÖÃÏëÒª¼à¿ØµÄÓ¦ÓÃÃû³Æ£»
-  # 2. µ±clusterNameExpression: default Ê±£¬turbine.aggregator.cluster-config ¿ÉÒÔ²»Ğ´£¬ÒòÎªÄ¬ÈÏ¾ÍÊÇ default£»
-  # 3. µ±clusterNameExpression: metadata[¡®cluster¡¯]Ê±£¬
-  # ¼ÙÉèÏëÒª¼à¿ØµÄÓ¦ÓÃÅäÖÃÁË eureka.instance.metadata-map.cluster: ABC£¬
-  # ÔòĞèÒªÅäÖÃ£¬Í¬Ê±turbine.aggregator.cluster-Config: ABC
+    cluster-config: default   #æŒ‡å®šèšåˆå“ªäº›é›†ç¾¤ï¼Œå¤šä¸ªä½¿ç”¨â€,â€åˆ†å‰²ï¼Œé»˜è®¤ä¸ºdefault
+  # 1. clusterNameExpressionæŒ‡å®šé›†ç¾¤åç§°ï¼Œé»˜è®¤è¡¨è¾¾å¼appNameï¼›
+  # æ­¤æ—¶ï¼šturbine.aggregator.cluster-configéœ€è¦é…ç½®æƒ³è¦ç›‘æ§çš„åº”ç”¨åç§°ï¼›
+  # 2. å½“clusterNameExpression: default æ—¶ï¼Œturbine.aggregator.cluster-config å¯ä»¥ä¸å†™ï¼Œå› ä¸ºé»˜è®¤å°±æ˜¯ defaultï¼›
+  # 3. å½“clusterNameExpression: metadata[â€˜clusterâ€™]æ—¶ï¼Œ
+  # å‡è®¾æƒ³è¦ç›‘æ§çš„åº”ç”¨é…ç½®äº† eureka.instance.metadata-map.cluster: ABCï¼Œ
+  # åˆ™éœ€è¦é…ç½® turbine.aggregator.cluster-Config: ABC
   cluster-name-expression: new String("default")
 #  combine-host-port: true
 #  instanceUrlSuffix:

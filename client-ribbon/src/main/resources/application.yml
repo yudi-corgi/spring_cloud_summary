@@ -3,24 +3,29 @@ server:
 spring:
   application:
     name: client-ribbon
-
 eureka:
   client:
-    register-with-eureka: false
-    fetch-registry: false
-#    service-url:
+#    register-with-eureka: false
+#    fetch-registry: false
+    service-url:
 #      defaultZone: http://localhost:8081/eureka
-#       defaultZone: http://admin:admin123@localhost:8081/eureka
+       defaultZone: http://admin:admin123@localhost:8081/eureka
 #      defaultZone: http://peer1:8078/eureka
 # 开启饥饿加载，并设置加载的服务名
 ribbon:
   eager-load:
     enabled: true
     clients: client-one
-    # 禁用 Eureka
-  eureka:
-    enabled: false
+# 禁用 Eureka
+#  eureka:
+#    enabled: false
 # 禁用 Eureka 后，手动配置服务列表，才可以通过服务名进行调用（client-one 是另一个服务的名称）
-client-one:
-  ribbon:
-    listOfServers: localhost:8082
+#client-one:
+#  ribbon:
+#    listOfServers: localhost:8082
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
