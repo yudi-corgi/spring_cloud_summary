@@ -7,10 +7,18 @@ spring:
 eureka:
   client:
     service-url:
-      # ·şÎñ×¢²áÖĞĞÄµØÖ·
-      defaultZone: http://localhost:8081/eureka
+      # æœåŠ¡æ³¨å†Œä¸­å¿ƒåœ°å€
+      defaultZone: http://admin:admin123@localhost:8081/eureka
+#      defaultZone: http://localhost:8081/eureka
 
 feign:
   hystrix:
-    # feign ¼¯³ÉÁË Hystrix£¬µ« D°æ±¾ºóÄ¬ÈÏÎª false ¹Ø±Õ£¬ĞèÅäÖÃ¿ªÆô
+    #  feign é›†æˆäº† Hystrixï¼Œä½† Dç‰ˆæœ¬åé»˜è®¤ä¸º false å…³é—­ï¼Œéœ€é…ç½®å¼€å¯
     enabled: true
+logging:
+  level:
+    com:
+      springcloud:
+        clientfeign:
+          service:
+            FeignService: DEBUG
