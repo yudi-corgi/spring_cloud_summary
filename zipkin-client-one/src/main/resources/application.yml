@@ -2,10 +2,17 @@ spring:
   application:
     name: zipkin-client-one
   zipkin:
-    base-url: http://localhost:9411   # ָ�� zipkin server �ĵ�ַ
+    base-url: http://localhost:9411   # zipkin server 地址
+#    sender:
+#      type: rabbit    # 设置消息采集方式为 rabbitMQ，默认是 HTTP 发送
+#  rabbitmq:
+#    addresses: amqp://localhost:5672
+#    username: guest
+#    password: guest
 server:
   port: 8093
 eureka:
   client:
     service-url:
-      defaultZone: http://localhost:8081/eureka/
+      defaultZone: http://admin:admin123@localhost:8081/eureka/
+

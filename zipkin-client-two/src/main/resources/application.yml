@@ -2,11 +2,15 @@ spring:
   application:
     name: zipkin-client-two
   zipkin:
-    base-url: http://localhost:9411   # ָ�� zipkin server �ĵ�ַ
+    base-url: http://localhost:9411   # Zipkin Server 地址
+  sleuth:
+    sampler:
+      probability: 1.0  # 表示数据采集比例，介于 0.0 ~ 1.0
 server:
   port: 8094
 
 eureka:
   client:
     service-url:
-      defaultZone: http://localhost:8081/eureka/
+      defaultZone: http://admin:admin123@localhost:8081/eureka/
+

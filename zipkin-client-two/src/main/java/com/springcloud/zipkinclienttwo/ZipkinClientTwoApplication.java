@@ -1,6 +1,6 @@
 package com.springcloud.zipkinclienttwo;
 
-import brave.sampler.Sampler;
+import brave.Tracer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -28,6 +28,9 @@ public class ZipkinClientTwoApplication {
     @Autowired
     private RestTemplate restTemplate;
 
+    @Autowired
+    private Tracer tracer;
+
     @Bean
     public RestTemplate restTemplate(){
         return new RestTemplate();
@@ -37,12 +40,8 @@ public class ZipkinClientTwoApplication {
     @RequestMapping("/getZipkinOneCall")
     public String getZipkinOneCall(){
         log.info("获取 zipkinOneCall 成功，调用 zipkin-client-one 服务.");
+        tracer.currentSpan().tag("zipkin-two","test");
         return restTemplate.getForObject("http://localhost:8093/getZipkinTwoCall",String.class);
-    }
-
-    @Bean
-    public Sampler defaultSampler() {
-        return Sampler.ALWAYS_SAMPLE;
     }
 
     // 本地 fallback 方法
