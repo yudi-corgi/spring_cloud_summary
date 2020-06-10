@@ -30,7 +30,7 @@ public class ClientFilter extends ZuulFilter {
      */
     @Override
     public String filterType() {
-        return "pre";
+        return "route";
     }
 
     /**
@@ -69,6 +69,11 @@ public class ClientFilter extends ZuulFilter {
     public Object run() throws ZuulException {
         // 获取当前路由的请求上下文
         RequestContext ctx = RequestContext.getCurrentContext();
+        try {
+            Thread.sleep(6000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
         HttpServletRequest request = ctx.getRequest();
         // 模拟获取参数 token，判断是否有权限调用服务
         Object token = request.getParameter("token");

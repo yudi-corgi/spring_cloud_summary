@@ -7,7 +7,7 @@ spring:
 eureka:
   client:
     service-url:
-      defaultZone: http://localhost:8081/eureka
+      defaultZone: http://admin:admin123@localhost:8081/eureka
 
 zuul:
   routes:
@@ -15,6 +15,25 @@ zuul:
     ribbon:
       path: /ribbon/**
       serviceId: client-ribbon
+      # 本地接口访问，如访问 /ribbon/1 时会跳转到本地接口 local/1
+#      url: forward:/local
     feign:
       path: /feign/**
       serviceId: client-feign
+  # API 前缀
+  prefix: /rest
+  # 开启重试机制
+  retryable: true
+ribbon:
+  connectionTimeout: 5000         # 请求连接的超时时间（ms）
+  readTimeout: 5000               # 请求处理的超时时间（ms）
+  maxAutoRetries: 1               # 对当前实例的重试次数
+  maxAutoRetriesNextServer: 3     # 切换实例的最大重试次数
+  okToRetryOnAllOperations: true  # 对所有操作请求都进行重试
+  retryableStatusCodes: 500,404,502 # 对指定的 Http 响应码进行重试
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"

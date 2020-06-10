@@ -18,9 +18,9 @@ public class RibbonService {
     private RestTemplate restTemplate;
 
     // 该注解指定服务熔断后调用的本地 fallBack 方法，并会把参数传递给该方法
+    // @HystrixProperty 设置 Hystrix 为线程隔离级别
     @HystrixCommand(fallbackMethod = "fallBackMethod",commandProperties = {
             @HystrixProperty(name = "execution.isolation.strategy",value = "THREAD"),
-            @HystrixProperty(name = "", value = "")
     })
     public String helloService(String name){
         //调用服务方法，地址填写注册的服务名称，Eureka 会自动转换为实际的 URL 地址
