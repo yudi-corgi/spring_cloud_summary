@@ -18,8 +18,24 @@ spring:
           # basedir: 可以写本地仓库的地址，如 E:\project\
       # 使用的仓库分支
       label: master
+    # 追踪配置
+    bus:
+      trace:
+        enabled: true
+      enabled: true
+  rabbitmq:
+    password: guest
+    username: guest
+    host: localhost
+    port: 5672
 # 注册到 Eureka 服务注册中心
 eureka:
   client:
     service-url:
-      defaultZone: http://localhost:8081/eureka
+      defaultZone: http://admin:admin123@localhost:8081/eureka
+# 暴露刷新端点
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
