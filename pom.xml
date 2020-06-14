@@ -28,6 +28,9 @@
         <module>config-client</module>
         <module>zipkin-client-one</module>
         <module>zipkin-client-two</module>
+        <module>consul-provider-one</module>
+        <module>consul-provider-two</module>
+        <module>consul-consumer</module>
     </modules>
 
     <properties>

@@ -1,0 +1,11 @@
+spring:
+#  application:
+#    name: consul-provider-one
+#  cloud:
+#    consul:
+#      host: localhost
+#      port: 8500      # consul 服务中心默认端口 8500
+#      discovery:
+#        service-name: consul-provider  # 指定注册的服务名
+  profiles:
+    active: dev

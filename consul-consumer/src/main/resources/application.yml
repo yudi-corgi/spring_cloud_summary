@@ -1,0 +1,11 @@
+server:
+  port: 8583
+spring:
+  application:
+    name: consul-consumer
+  cloud:
+    consul:
+      host: localhost
+      port: 8500
+      discovery:
+        register: false   # 表示不注册到 Consul 服务中心，因此启动类不需要添加注解 @EnableDiscoveryClient

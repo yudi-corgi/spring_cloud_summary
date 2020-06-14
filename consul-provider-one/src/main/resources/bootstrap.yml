@@ -1,0 +1,16 @@
+spring:
+  application:
+    name: consul-provider-one
+  cloud:
+    consul:
+      host: localhost
+      port: 8500
+      discovery:
+        service-name: consul-provider-one
+      config:
+        enabled: true           # 启用 consul config
+        format: yaml            # 指定配置文件格式,如 properties、key_value、file
+        prefix: config          # 配置文件基础目录
+        default-context: consul-provider  # 表示配置文件对应的 {application} 部分
+        profile-separator: ':'  # {profiles} 分隔符，默认 “，”
+        data-key: data          # 配置文件的 key
