@@ -35,4 +35,9 @@ public class ClientOneApplication {
         ServiceInstance instance = balancerClient.choose("CLIENT-FEIGN");
         return "Hello,"+ name +"!This is spring cloud client-one!Port:"+instance.getPort();
     }
+
+    @RequestMapping("call")
+    public String call(){
+        return "嗯，你调用成功了。";
+    }
 }

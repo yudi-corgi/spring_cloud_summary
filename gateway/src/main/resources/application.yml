@@ -1,0 +1,77 @@
+server:
+  port: 8099
+spring:
+  application:
+    name: cloud-gateway
+  cloud:
+    gateway:
+      discovery:
+        locator:
+          enabled: false   # 与服务注册发现组件结合，可通过 serviceId 路由服务
+          lower-case-service-id: true   # 将 serviceId 统一转换小写，默认大写
+      # 访问 /cloud 都会路由到 client-one 服务中,
+      # lb 是 LoadBalancer 简写，代表开启负载均衡，如此通过网关访问不需要添加 serviceId
+      # locator.enable=false ，若为 true，则通过 http://网关IP:port/serviceId/uri 依旧能访问，因为服务被创建了两个 router
+      routes:
+        - id: customer_filter
+          uri: https://example.org
+          predicates:
+            - Path=/customerFilter/**
+          filters:
+            # 自定义的请求执行时间计算过滤器
+            - Time=false
+            # Hystrix 断路器过滤器
+            - name: Hystrix
+              args:
+                name: fallbackcmd
+                fallbackUri: forward:/nativeFallback
+            # 重试过滤器
+            - name: Retry
+              args:
+                retries: 3              # 重试次数
+                statues: BAD_GATEWAY    # HTTP 返回状态码，BAD_GATEWAY（502） ,参考:org.springframework.http.HttpStatus
+#                methods: GET           # 指定哪些请求方式需要重试，参考:org.springframework.http.HttpMethod
+#                series: SERVER_ERROR   # 判断状态码是否符合规则来重试，默认 SERVER_ERROR(5** 状态码），参考同 statues
+        - id: service-id
+          uri: lb://client-one
+          predicates:
+            - Path=/cloud/**
+          filters:
+            - StripPrefix=1
+  #      routes:
+#        - id: route       # 自定义的路由 ID
+#          uri: https://example.org    # 路由目标服务地址
+#          predicates:                 # 路由条件
+#            - After=2020-06-15T06:06:06+08:00[Asia/Shanghai]    # AfterRoutePredicateFactory
+#            - Before=2020-06-16T06:06:06+08:00[Asia/Shanghai]   # BeforeRoutePredicateFactory
+            # BetweenRoutePredicateFactory
+#            - Between=2020-06-15T06:06:06+08:00[Asia/Shanghai],2020-06-16T06:06:06+08:00[Asia/Shanghai]
+            # CookieRoutePredicateFactory
+            # 参数一是 cookie 名称，参数二是 Java 正则表达式，请求路径携带 cookie:chocolate=is.good 才匹配成功
+#            - Cookie=chocolate,is.good
+            # HeaderRoutePredicateFactory，定义 Header 属性名和 Java 正则表达式
+#            - Header=X-Request-Id, \d+
+            # HostRoutePredicateFactory，通过请求参数中的主机地址进行匹配，.为分隔符
+#            - Host=**.example.org
+            # MethodRoutePredicateFactory，通过请求方式匹配
+#            - Method=GET,POST
+            # PathRoutePredicateFactory，通过请求路径匹配，{segment} 是 URI 变量，可以匹配 /cloud/a，/cloud/1 等
+#            - Path=/cloud/{segment}
+            # QueryRoutePredicateFactory，请求路径需带 name=yu?? 键值参数才可以匹配， . 代表一个字符，可不写值
+#            - Query=name,yu..
+            # RemoteAddrRoutePredicateFactory，值是 CIDR标记（IPv4或IPv6）字符串
+            # 127.0.0.1/7（其中127.0.0.1是IP地址，而7是子网掩码），远端调用的 IP 地址符合才匹配路由
+#            - RemoteAddr=127.0.0.1/7
+            # WeightRoutePredicateFactory，根据分组权重路由地址，参数：group,weight(int)
+#            - weight=group1,2
+#        - id: route_weight
+#          uri: https://example2.org
+#          predicates:
+#            - weight=group1,8
+eureka:
+  client:
+    service-url:
+      defaultZone: http://admin:admin123@localhost:8081/eureka
+logging:
+  level:
+    org.springframework.cloud.gateway: debug
