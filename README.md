@@ -18,6 +18,7 @@
 
 #### API 网关路由
 - [x] Zuul
+- [x] Gateway
 
 #### 配置中心
 - [x] Config 
