@@ -27,3 +27,8 @@
 #### 服务追踪
 - [x] Sleuth 
 - [x] Zipkin
+
+#### 服务监控/管理/邮箱警报
+- [x] Admin-Server
+- [x] Actuator
+- [x] spring-boot-starter-mail
