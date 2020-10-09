@@ -1,0 +1,45 @@
+spring:
+  application:
+    name: admin-server
+  security:
+    user:
+      name: root
+      password: root123
+  mail:
+    host: smtp.qq.com   # qq 邮箱 smtp 服务器
+    username: xxx@qq.com # qq 电子邮箱
+    password: rpuxbzfopcrzbdgj  # 授权码
+    # 邮箱属性配置
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+            required: true
+  boot:
+    admin:
+      notify:
+        mail:
+          to: xxx@gmail.com    # 邮件接收者
+          from: xxx@qq.com # 邮件发送人
+server:
+  port: 9091
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+# eureka 配置，将 admin 注册到 eureka 后即可自动监测所有服务
+eureka:
+  client:
+    service-url:
+      defaultZone: http://admin:admin123@localhost:8081/eureka
+  instance:
+    prefer-ip-address: true
+    instance-id: ${spring.application.name}:${spring.cloud.client.ip-address}:${server.port}
+    # 服务点击跳转页面（注册中心中点击跳转）
+    status-page-url: http://${spring.cloud.client.ipAddress}:${server.port}
+
+
