@@ -8,7 +8,7 @@ spring:
   mail:
     host: smtp.qq.com   # qq 邮箱 smtp 服务器
     username: xxx@qq.com # qq 电子邮箱
-    password: xxx  # 授权码
+    password: xxx  # 开通 smtp 服务的授权码
     # 邮箱属性配置
     properties:
       mail:
