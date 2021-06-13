@@ -33,6 +33,7 @@
         <module>consul-consumer</module>
 		<module>gateway</module>
 		<module>admin-server</module>
+        <module>zookeeper-client</module>
     </modules>
 
     <properties>
@@ -65,6 +66,19 @@
                 <version>${spring-cloud.version}</version>
                 <type>pom</type>
                 <scope>import</scope>
+            </dependency>
+
+            <!-- lombok 插件 -->
+            <dependency>
+                <groupId>org.projectlombok</groupId>
+                <artifactId>lombok</artifactId>
+                <version>1.18.20</version>
+            </dependency>
+
+            <dependency>
+                <groupId>junit</groupId>
+                <artifactId>junit</artifactId>
+                <version>4.13.2</version>
             </dependency>
         </dependencies>
     </dependencyManagement>

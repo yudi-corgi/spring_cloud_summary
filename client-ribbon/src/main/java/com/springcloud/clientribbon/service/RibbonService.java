@@ -23,6 +23,7 @@ public class RibbonService {
             @HystrixProperty(name = "execution.isolation.strategy",value = "THREAD"),
     })
     public String helloService(String name){
+        int a = 10/0;
         //调用服务方法，地址填写注册的服务名称，Eureka 会自动转换为实际的 URL 地址
         return restTemplate.getForObject("http://client-one/clientOneView?name="+name,String.class);
     }

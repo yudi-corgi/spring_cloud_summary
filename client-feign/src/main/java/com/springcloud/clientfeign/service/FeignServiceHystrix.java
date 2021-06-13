@@ -23,11 +23,7 @@ public class FeignServiceHystrix implements FeignService, FallbackFactory<FeignS
     @Override
     public FeignService create(Throwable throwable) {
         logger.error("错误原因：" + throwable);
-        return new FeignService() {
-            @Override
-            public String helloClientOne(String name) {
-                return "错误啦。";
-            }
-        };
+        System.out.println("ni cai cai wo shuo le shen  ");
+        return (name) -> name + " 错误啦";
     }
 }

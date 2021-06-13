@@ -9,11 +9,12 @@ eureka:
     service-url:
       # 服务注册中心地址
       defaultZone: http://admin:admin123@localhost:8081/eureka
-#      defaultZone: http://localhost:8081/eureka
+  instance:
+    prefer-ip-address: true
 
 feign:
   hystrix:
-    #  feign 集成了 Hystrix，但 D版本后默认为 false 关闭，需配置开启
+    #  feign 集成了 Hystrix，但 D 版本后默认为 false 关闭，需配置开启
     enabled: true
 logging:
   level:
