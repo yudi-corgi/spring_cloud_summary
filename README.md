@@ -6,6 +6,7 @@
 #### 服务注册与发现
 - [x] Eureka Server/Client
 - [x] Consul
+- [ ] Zookeeper
 
 #### 服务调用
 - [x] Ribbon
