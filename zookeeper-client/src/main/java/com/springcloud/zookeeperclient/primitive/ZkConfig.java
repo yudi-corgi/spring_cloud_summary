@@ -42,7 +42,8 @@ public class ZkConfig implements Watcher {
 
     @SneakyThrows
     public void testConnection(){
-        ZooKeeper zooKeeper = new ZooKeeper("127.0.0.1:2181", 5000, new ZkConfig());
+        // 集群环境下多个服务 IP:Port 逗号分割即可
+        ZooKeeper zooKeeper = new ZooKeeper("127.0.0.1:2181,127.0.0.1:2182,127.0.0.2.2181", 5000, new ZkConfig());
         COUNT_DOWN_LATCH.await();
         // 模拟授权失败，填写错误的 auth 认证用户，针对 KeeperState.AuthFailed
         zooKeeper.addAuthInfo("digest","admin:123456".getBytes());
@@ -59,7 +60,7 @@ public class ZkConfig implements Watcher {
 
     @SneakyThrows
     public static ZooKeeper connection(){
-        ZooKeeper zooKeeper = new ZooKeeper("192.168.137.8:2181", 5000, event -> {
+        ZooKeeper zooKeeper = new ZooKeeper("127.0.0.1:2181", 5000, event -> {
             if(event.getType() == Event.EventType.None && event.getState() == Event.KeeperState.SyncConnected){
                 System.out.println("客户端连接成功!");
                 COUNT_DOWN_LATCH.countDown();
