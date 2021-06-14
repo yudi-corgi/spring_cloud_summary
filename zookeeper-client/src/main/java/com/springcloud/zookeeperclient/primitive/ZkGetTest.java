@@ -1,6 +1,7 @@
 package com.springcloud.zookeeperclient.primitive;
 
 import lombok.SneakyThrows;
+import org.apache.zookeeper.KeeperException;
 import org.apache.zookeeper.ZooKeeper;
 import org.apache.zookeeper.data.Stat;
 import org.junit.After;
@@ -104,5 +105,11 @@ public class ZkGetTest {
             System.out.println(stat == null ? "节点不存在" : "数据版本号：" + stat.getVersion());
         }, "I'm Context");
         System.out.println("异步获取子节点方法执行到此！");
+    }
+
+    @Test
+    public void ssasd() throws KeeperException, InterruptedException {
+        List<String> children = zooKeeper.getChildren("/locks", false);
+        System.out.println(children.get(0));
     }
 }

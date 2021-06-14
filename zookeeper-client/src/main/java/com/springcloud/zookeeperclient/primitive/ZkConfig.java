@@ -42,7 +42,7 @@ public class ZkConfig implements Watcher {
 
     @SneakyThrows
     public void testConnection(){
-        ZooKeeper zooKeeper = new ZooKeeper("192.168.137.8:2181", 5000, new ZkConfig());
+        ZooKeeper zooKeeper = new ZooKeeper("127.0.0.1:2181", 5000, new ZkConfig());
         COUNT_DOWN_LATCH.await();
         // 模拟授权失败，填写错误的 auth 认证用户，针对 KeeperState.AuthFailed
         zooKeeper.addAuthInfo("digest","admin:123456".getBytes());
@@ -60,7 +60,10 @@ public class ZkConfig implements Watcher {
     @SneakyThrows
     public static ZooKeeper connection(){
         ZooKeeper zooKeeper = new ZooKeeper("192.168.137.8:2181", 5000, event -> {
-            System.out.println("客户端连接成功!");
+            if(event.getType() == Event.EventType.None && event.getState() == Event.KeeperState.SyncConnected){
+                System.out.println("客户端连接成功!");
+                COUNT_DOWN_LATCH.countDown();
+            }
         });
         COUNT_DOWN_LATCH.await();
         System.out.println("当前客户端会话ID："+zooKeeper.getSessionId());
