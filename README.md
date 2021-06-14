@@ -6,7 +6,7 @@
 #### 服务注册与发现
 - [x] Eureka Server/Client
 - [x] Consul
-- [ ] Zookeeper
+- [ ] Zookeeper（目前只写了 ZK 原生客户端API的简单示例，未当作注册中心使用，STUDYING...）
 
 #### 服务调用
 - [x] Ribbon
@@ -28,6 +28,7 @@
 #### 服务追踪
 - [x] Sleuth 
 - [x] Zipkin
+- [ ] SkyWalking
 
 #### 服务监控/管理/邮箱警报
 - [x] Admin-Server
