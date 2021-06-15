@@ -84,7 +84,8 @@ public class CuratorWatcherTest {
         CuratorCacheListener create = CuratorCacheListener.builder().forCreates(childData -> {
             System.out.println("新创建的节点：" + childData.getPath());
         }).build();
-        // 监听节点及子孙节点修改事件，只能针对客户端修改API有效果，sh / cmd 命令行增改都无法触发（原因应当是事件类型不匹配）
+        // 监听节点及子孙节点修改事件，只能针对客户端修改API有效果
+        // sh / cmd 命令行增改都无法触发（原因应当是事件类型不匹配，未据此重新测试）
         CuratorCacheListener changes = CuratorCacheListener.builder().forChanges( (oldNode, childData) -> {
             System.out.println("节点旧数据：" + new String(oldNode.getData(), StandardCharsets.UTF_8));
             System.out.println("节点新数据：" + new String(childData.getData(), StandardCharsets.UTF_8));
@@ -93,7 +94,8 @@ public class CuratorWatcherTest {
         CuratorCacheListener delete = CuratorCacheListener.builder().forDeletes(childData -> {
             System.out.println("删除的节点：" + childData.getPath());
         }).build();
-        // 监听节点及子孙节点增改事件，只能针对客户端修改API后响应 changes 事件，sh / cmd 命令行增改都无法触发（原因应当是事件类型不匹配）
+        // 监听节点及子孙节点增改事件，只能针对客户端修改API后响应 changes 事件
+        // sh / cmd 命令行增改都无法触发（原因应当是事件类型不匹配，未据此重新测试）
         CuratorCacheListener ccl = CuratorCacheListener.builder()
                 .forCreatesAndChanges((oldNode, node) -> {
                     System.out.println("节点旧数据："+new String(oldNode.getData(), StandardCharsets.UTF_8));
