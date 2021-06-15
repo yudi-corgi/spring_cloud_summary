@@ -41,6 +41,7 @@
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <java.version>1.8</java.version>
         <spring-cloud.version>Hoxton.SR4</spring-cloud.version>
+        <curator.version>5.1.0</curator.version>
     </properties>
 
     <dependencies>
@@ -68,6 +69,18 @@
                 <scope>import</scope>
             </dependency>
 
+            <!-- curator：ZK 客户端 API 操作依赖 -->
+            <dependency>
+                <groupId>org.apache.curator</groupId>
+                <artifactId>curator-recipes</artifactId>
+                <version>${curator.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.curator</groupId>
+                <artifactId>curator-framework</artifactId>
+                <version>${curator.version}</version>
+            </dependency>
+
             <!-- lombok 插件 -->
             <dependency>
                 <groupId>org.projectlombok</groupId>
@@ -75,6 +88,7 @@
                 <version>1.18.20</version>
             </dependency>
 
+            <!-- Junit 测试 -->
             <dependency>
                 <groupId>junit</groupId>
                 <artifactId>junit</artifactId>
