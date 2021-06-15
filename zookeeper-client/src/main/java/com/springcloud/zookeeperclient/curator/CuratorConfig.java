@@ -29,7 +29,7 @@ public class CuratorConfig {
                 .sessionTimeoutMs(50000)
                 .connectionTimeoutMs(5000)
                 .retryPolicy(new RetryNTimes(3, 3000))
-                .namespace("root")
+                // .namespace("root")
                 .build();
         // 调用该方法才可开始使用 curator
         curatorFramework.start();
