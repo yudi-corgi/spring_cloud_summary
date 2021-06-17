@@ -33,7 +33,7 @@
         <module>consul-consumer</module>
 		<module>gateway</module>
 		<module>admin-server</module>
-        <module>zookeeper-client</module>
+        <module>zookeeper-client-one</module>
     </modules>
 
     <properties>
@@ -93,6 +93,13 @@
                 <groupId>junit</groupId>
                 <artifactId>junit</artifactId>
                 <version>4.13.2</version>
+            </dependency>
+
+            <!-- slf4j -->
+            <dependency>
+                <groupId>org.slf4j</groupId>
+                <artifactId>slf4j-api</artifactId>
+                <version>1.7.30</version>
             </dependency>
         </dependencies>
     </dependencyManagement>

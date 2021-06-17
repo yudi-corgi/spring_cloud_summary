@@ -1,0 +1,9 @@
+server:
+  port: 8061
+
+spring:
+  application:
+    name: zookeeper-client-one
+  cloud:
+    zookeeper:
+      connect-string: localhost:2181

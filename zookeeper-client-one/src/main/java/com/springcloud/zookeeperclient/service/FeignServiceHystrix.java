@@ -1,4 +1,4 @@
-package com.springcloud.clientfeign.service;
+package com.springcloud.zookeeperclient.service;
 
 import feign.hystrix.FallbackFactory;
 import org.slf4j.Logger;
@@ -23,7 +23,7 @@ public class FeignServiceHystrix implements FeignService, FallbackFactory<FeignS
     @Override
     public FeignService create(Throwable throwable) {
         logger.error("错误原因：" + throwable);
-        System.out.println("ni cai cai wo shuo le shen  ");
+        System.out.println("ni cai cai wo shuo le shen me");
         return (name) -> name + " 错误啦";
     }
 }

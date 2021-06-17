@@ -6,7 +6,7 @@
 #### 服务注册与发现
 - [x] Eureka Server/Client
 - [x] Consul
-- [ ] Zookeeper（目前只写了 ZK 原生客户端 API 和 Curator API 的例子，未当作注册中心使用，STUDYING...）
+- [x] Zookeeper
 
 #### 服务调用
 - [x] Ribbon

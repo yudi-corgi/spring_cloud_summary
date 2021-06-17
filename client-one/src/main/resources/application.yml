@@ -4,12 +4,16 @@ server:
 spring:
   application:
     name: client-one
-
-eureka:
-  client:
+  cloud:
+    zookeeper:
+      # 连接到 zookeeper
+      connect-string: localhost:2181
+# eureka 配置
+  #eureka:
+#  client:
     # 表示服务要注册到哪个注册中心，默认是 http://IP:Port/eureka/
-    service-url:
-      defaultZone: http://admin:admin123@localhost:8081/eureka
+#    service-url:
+#      defaultZone: http://admin:admin123@localhost:8081/eureka
 management:
   endpoint:
     shutdown:
