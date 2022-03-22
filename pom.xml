@@ -34,6 +34,8 @@
 		<module>gateway</module>
 		<module>admin-server</module>
         <module>zookeeper-client-one</module>
+        <module>cloud-alibaba</module>
+        <module>cloud-alibaba/nacos-example</module>
     </modules>
 
     <properties>
@@ -41,7 +43,10 @@
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <java.version>1.8</java.version>
         <spring-cloud.version>Hoxton.SR4</spring-cloud.version>
+        <spring-cloud-alibaba.version>2.2.7.RELEASE</spring-cloud-alibaba.version>
         <curator.version>5.1.0</curator.version>
+        <mybatis.plus.version>3.5.1</mybatis.plus.version>
+        <mysql.version>8.0.21</mysql.version>
     </properties>
 
     <dependencies>
@@ -59,14 +64,36 @@
     </dependencies>
 
     <dependencyManagement>
-        <!-- spring cloud 依赖管理 -->
         <dependencies>
+            <!-- spring cloud 依赖管理 -->
             <dependency>
                 <groupId>org.springframework.cloud</groupId>
                 <artifactId>spring-cloud-dependencies</artifactId>
                 <version>${spring-cloud.version}</version>
                 <type>pom</type>
                 <scope>import</scope>
+            </dependency>
+
+            <!-- Spring Cloud Alibaba 依赖 -->
+            <dependency>
+                <groupId>com.alibaba.cloud</groupId>
+                <artifactId>spring-cloud-alibaba-dependencies</artifactId>
+                <version>${spring-cloud-alibaba.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+
+            <!-- DB -->
+            <dependency>
+                <groupId>com.baomidou</groupId>
+                <artifactId>mybatis-plus-boot-starter</artifactId>
+                <version>${mybatis.plus.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>mysql</groupId>
+                <artifactId>mysql-connector-java</artifactId>
+                <version>${mysql.version}</version>
             </dependency>
 
             <!-- curator：ZK 客户端 API 操作依赖 -->
