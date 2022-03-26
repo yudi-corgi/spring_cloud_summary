@@ -6,5 +6,6 @@ spring:
     nacos:
       discovery:
         server-addr: 119.91.138.217:8848   # nacos 服务端地址
+        cluster-name: GZ                   # 指定服务所在集群名称
   application:
     name: nacos-provider

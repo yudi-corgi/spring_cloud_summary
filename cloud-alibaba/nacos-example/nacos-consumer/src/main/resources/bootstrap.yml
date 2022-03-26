@@ -1,0 +1,12 @@
+spring:
+  application:
+    name: nacos-consumer  # 服务名称
+  profiles:
+    active: dev           # 服务环境
+  cloud:
+    nacos:
+      server-addr: 119.91.138.217:8848
+      config:
+        file-extension: yaml  # 配置信息后缀名
+#        namespace: 54d6ef39-0142-4881-be78-db62d05a78f6  # 配置信息所属命名空间
+        group: DEFAULT_GROUP  # 配置信息所属分组

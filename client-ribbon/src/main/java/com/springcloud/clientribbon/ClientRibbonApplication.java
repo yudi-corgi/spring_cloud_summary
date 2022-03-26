@@ -1,9 +1,11 @@
 package com.springcloud.clientribbon;
 
+import com.netflix.loadbalancer.IRule;
+import com.netflix.loadbalancer.RandomRule;
+import com.springcloud.clientribbon.annotation.EasyLoadBalanced;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.client.circuitbreaker.EnableCircuitBreaker;
-import org.springframework.cloud.client.loadbalancer.LoadBalanced;
 import org.springframework.cloud.netflix.hystrix.dashboard.EnableHystrixDashboard;
 import org.springframework.context.annotation.Bean;
 import org.springframework.web.client.RestTemplate;
@@ -29,9 +31,18 @@ public class ClientRibbonApplication {
      * @return
      */
     @Bean
-    @LoadBalanced
-    // @EasyLoadBalanced
+    //@LoadBalanced
+     @EasyLoadBalanced
     RestTemplate restTemplate(){
         return new RestTemplate();
+    }
+
+    /**
+     * 修改负载均衡策略为随机
+     * @return {@link RandomRule}
+     */
+    @Bean
+    public IRule randomRule() {
+        return new RandomRule();
     }
 }

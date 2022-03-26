@@ -29,3 +29,8 @@ management:
     web:
       exposure:
         include: "*"
+
+# 修改负载均衡策略
+#client-one:  # 指定应用该策略的服务名
+#  ribbon:
+#    NFLoadBalancerRuleClassName: com.netflix.loadbalancer.RandomRule  # 策略全限定名

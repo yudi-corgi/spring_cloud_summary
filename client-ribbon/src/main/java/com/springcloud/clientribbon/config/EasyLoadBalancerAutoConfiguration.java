@@ -1,6 +1,5 @@
 package com.springcloud.clientribbon.config;
 
-import com.springcloud.clientribbon.annotation.EasyLoadBalanced;
 import com.springcloud.clientribbon.interceptor.EasyLoadBalancerInterceptor;
 import org.springframework.beans.factory.SmartInitializingSingleton;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,7 +20,7 @@ import java.util.List;
 @Configuration
 public class EasyLoadBalancerAutoConfiguration {
 
-    @EasyLoadBalanced
+    //@EasyLoadBalanced
     @Autowired(required = false)
     private List<RestTemplate> restTemplates = Collections.emptyList();
 
@@ -31,7 +30,7 @@ public class EasyLoadBalancerAutoConfiguration {
     }
 
     @Bean
-    public SmartInitializingSingleton EasyLoadBalancedRestTemplateInitializer(){
+    public SmartInitializingSingleton easyLoadBalancedRestTemplateInitializer(){
         return new SmartInitializingSingleton() {
             @Override
             public void afterSingletonsInstantiated() {
