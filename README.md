@@ -7,6 +7,7 @@
 - [x] Eureka Server/Client
 - [x] Consul
 - [x] Zookeeper
+- [x] Nacos
 
 #### 服务调用
 - [x] Ribbon
@@ -24,6 +25,7 @@
 #### 配置中心
 - [x] Config 
 - [x] Bus
+- [x] Nacos
 
 #### 服务追踪
 - [x] Sleuth 
