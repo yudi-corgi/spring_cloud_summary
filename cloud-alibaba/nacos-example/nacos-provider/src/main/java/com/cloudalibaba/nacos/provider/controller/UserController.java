@@ -18,7 +18,7 @@ public class UserController {
     private UserService userService;
 
     @GetMapping("/user/{id}")
-    public User get(@PathVariable Integer id) {
+    public User get(@PathVariable String id) {
         return userService.selectById(id);
     }
 
@@ -33,7 +33,7 @@ public class UserController {
     }
 
     @DeleteMapping("/user/{id}")
-    public void delete(@PathVariable Integer id) {
+    public void delete(@PathVariable String id) {
         userService.deleteById(id);
     }
 

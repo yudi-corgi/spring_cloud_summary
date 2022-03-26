@@ -15,7 +15,7 @@ public interface UserService {
      * @param id 用户ID
      * @return 目标用户
      */
-    User selectById(int id);
+    User selectById(String id);
 
     /**
      * 查询所有用户
@@ -33,7 +33,7 @@ public interface UserService {
      * 根据 ID 删除用户
      * @param id 用户 ID
      */
-    void deleteById(int id);
+    void deleteById(String id);
 
     /**
      * 根据 ID 更新用户
