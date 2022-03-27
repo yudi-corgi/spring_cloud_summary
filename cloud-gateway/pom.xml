@@ -9,10 +9,11 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>cloud-alibaba</artifactId>
+    <artifactId>cloud-gateway</artifactId>
     <packaging>pom</packaging>
     <modules>
-        <module>nacos-example</module>
+        <module>client-zuul</module>
+        <module>gateway</module>
     </modules>
 
     <properties>

@@ -9,10 +9,11 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>cloud-alibaba</artifactId>
+    <artifactId>cloud-config</artifactId>
     <packaging>pom</packaging>
     <modules>
-        <module>nacos-example</module>
+        <module>config-client</module>
+        <module>config-server</module>
     </modules>
 
     <properties>

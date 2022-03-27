@@ -15,27 +15,16 @@
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
         <version>2.3.0.RELEASE</version>
-        <relativePath/> <!-- lookup parent from repository -->
+        <!-- <relativePath/>  lookup parent from repository -->
     </parent>
 
     <modules>
-        <module>server</module>
-        <module>client-one</module>
-        <module>client-ribbon</module>
-        <module>client-feign</module>
-        <module>client-zuul</module>
-        <module>config-server</module>
-        <module>config-client</module>
-        <module>zipkin-client-one</module>
-        <module>zipkin-client-two</module>
-        <module>consul-provider-one</module>
-        <module>consul-provider-two</module>
-        <module>consul-consumer</module>
-		<module>gateway</module>
 		<module>admin-server</module>
-        <module>zookeeper-client-one</module>
         <module>cloud-alibaba</module>
-        <module>cloud-alibaba/nacos-example</module>
+        <module>cloud-discovery</module>
+        <module>cloud-config</module>
+        <module>cloud-gateway</module>
+        <module>cloud-tracking</module>
     </modules>
 
     <properties>
