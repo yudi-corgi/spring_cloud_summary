@@ -1,7 +1,7 @@
 package com.cloudalibaba.nacos.provider.service.impl;
 
-import com.cloudalibaba.nacos.provider.domain.User;
-import com.cloudalibaba.nacos.provider.service.UserService;
+import com.cloudalibaba.nacos.api.domain.User;
+import com.cloudalibaba.nacos.api.service.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 

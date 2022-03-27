@@ -15,3 +15,24 @@ spring:
 nacos-provider:
   ribbon:
     NFLoadBalancerRuleClassName: com.alibaba.cloud.nacos.ribbon.NacosRule
+
+# Feign 日志级别配置，当配置文件配置以及代码配置都存在时，两种日志信息都会输出
+feign:
+  client:
+    config:
+      default:             # default 表示应用到所有服务实例，可指定某服务名称，则表示仅应用于该服务
+        loggerLevel: FULL  # 日志级别，其余：NONE（默认）、BASIC、HEADERS
+  httpclient:
+    enabled: true                   # 开启 Feign （Apache）HttpClient
+    max-connections: 200            # 连接池最大连接数
+    max-connections-per-route: 50   # 每个路由最大的连接数
+    connection-timeout: 2000        # 连接超时时间
+    time-to-live: 900               # 连接存活时间
+    time-to-live-unit: seconds      # 连接存活时间单位
+#  okhttp:
+#    enabled: true                  # 启用 okhttp
+
+logging:
+  level:
+    com.cloudalibaba: debug # 修改日志级别，SpringBoot 日志级别默认 info，Feign 日志打印为 debug
+

@@ -1,7 +1,7 @@
 package com.cloudalibaba.nacos.provider.controller;
 
-import com.cloudalibaba.nacos.provider.domain.User;
-import com.cloudalibaba.nacos.provider.service.UserService;
+import com.cloudalibaba.nacos.api.domain.User;
+import com.cloudalibaba.nacos.api.service.UserService;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;

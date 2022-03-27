@@ -11,7 +11,7 @@ import org.springframework.web.client.RestTemplate;
  * @author YUDI-Corgi
  * @description nacos 服务消费者启动类
  */
-@EnableFeignClients
+@EnableFeignClients(basePackages = "com.cloudalibaba.nacos.api.service")
 @SpringBootApplication
 public class NacosConsumerApplication {
 
