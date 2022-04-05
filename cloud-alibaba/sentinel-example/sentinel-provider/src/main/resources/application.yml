@@ -1,0 +1,17 @@
+server:
+  port: 9528
+
+spring:
+  application:
+    name: sentinel-provider
+  cloud:
+    nacos:
+      server-addr: 119.91.138.217:8848  # nacos 地址
+    sentinel:
+      transport:
+        dashboard: localhost:9527       # sentinel 控制台地址
+#        port: 8720                      # sentinel 监控客户端 API 端口
+
+logging:
+  level:
+    com.cloudalibaba: debug

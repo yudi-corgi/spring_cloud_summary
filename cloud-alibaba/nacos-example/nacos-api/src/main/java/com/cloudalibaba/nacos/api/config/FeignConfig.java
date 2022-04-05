@@ -10,7 +10,7 @@ import org.springframework.context.annotation.Bean;
 public class FeignConfig {
 
     /**
-     * 修改 Feign 日志界别
+     * 修改 Feign 日志级别
      * @return {@link Logger.Level}
      */
     @Bean

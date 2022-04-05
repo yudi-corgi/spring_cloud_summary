@@ -1,0 +1,26 @@
+server:
+  port: 9529
+
+spring:
+  application:
+    name: sentinel-consumer
+  cloud:
+    nacos:
+      server-addr: 119.91.138.217:8848  # nacos 地址
+    sentinel:
+      transport:
+        dashboard: localhost:9527       # sentinel 控制台地址
+#        port: 8719                      # sentinel 监控客户端 API 端口
+      # 指定是否统一 web 上下文（即使用默认的上下文名称）
+      # true 会将所有资源链路统一放在一个父链路中，false 则会将所有资源分开
+      # 使用【流控规则-流控模式-链路】规则时需要置为 false，否则该规则会失效
+      web-context-unify: false
+
+# 指定服务负载均衡策略
+nacos-provider:
+  ribbon:
+    NFLoadBalancerRuleClassName: com.alibaba.cloud.nacos.ribbon.NacosRule
+
+logging:
+  level:
+    com.cloudalibaba: debug
