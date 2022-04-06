@@ -20,7 +20,7 @@ public class TestService {
 
     @SentinelResource("laugh")
     public String laugh(int i) {
-        System.out.println(echoService.echo());
+        System.out.println(echoService.echo(String.valueOf(i)));
         /*
             这里调用其它服务是为了验证 Sentinel 簇点链路是否会嵌套记录同个对象里的资源，
             验证后是不会嵌套，比如：

@@ -21,9 +21,9 @@ public class ConsumeController {
     @Resource
     private TestService testService;
 
-    @GetMapping("/echo")
-    public String echo() {
-        return echoService.echo();
+    @GetMapping("/lll/{id}")
+    public String echo(@PathVariable("id") int id) {
+        return echoService.echo(String.valueOf(id));
     }
 
     @GetMapping("/say")

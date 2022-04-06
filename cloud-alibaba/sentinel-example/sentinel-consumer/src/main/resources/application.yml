@@ -24,3 +24,8 @@ nacos-provider:
 logging:
   level:
     com.cloudalibaba: debug
+
+# 启用 sentinel 对 Feign 客户端的资源扫描
+feign:
+  sentinel:
+    enabled: true

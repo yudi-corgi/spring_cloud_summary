@@ -11,8 +11,16 @@ import org.springframework.stereotype.Service;
 public class EchoServiceImpl implements EchoService {
 
     @Override
-    public String echo() {
+    public String echo(String id) {
+        if ("1".equals(id)) {
+            int a = 1/0;
+        }
         return "Hello world!";
+    }
+
+    @Override
+    public String draw() {
+        return "The Last Supper!";
     }
 
 }

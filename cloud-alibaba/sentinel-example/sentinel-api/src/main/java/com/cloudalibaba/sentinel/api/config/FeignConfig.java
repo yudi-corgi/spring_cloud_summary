@@ -1,5 +1,6 @@
 package com.cloudalibaba.sentinel.api.config;
 
+import com.cloudalibaba.sentinel.api.service.EchoFallbackFactory;
 import feign.Logger;
 import org.springframework.context.annotation.Bean;
 
@@ -14,4 +15,8 @@ public class FeignConfig {
         return Logger.Level.FULL;
     }
 
+    @Bean
+    public EchoFallbackFactory echoFallbackFactory() {
+        return new EchoFallbackFactory();
+    }
 }
