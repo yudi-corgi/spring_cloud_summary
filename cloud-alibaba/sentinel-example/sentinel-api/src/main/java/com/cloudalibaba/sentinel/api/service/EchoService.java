@@ -19,7 +19,7 @@ public interface EchoService {
      * @return Hello World!
      */
     @GetMapping("/echo")
-    String echo(@RequestParam("id") String id);
+    String echo(@RequestParam("id") int id);
 
     /**
      * draw

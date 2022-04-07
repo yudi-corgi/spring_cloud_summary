@@ -1,6 +1,8 @@
 package com.cloudalibaba.sentinel.consumer.service;
 
+import com.alibaba.csp.sentinel.EntryType;
 import com.alibaba.csp.sentinel.annotation.SentinelResource;
+import com.alibaba.csp.sentinel.slots.block.BlockException;
 import com.cloudalibaba.sentinel.api.service.EchoService;
 import org.springframework.stereotype.Service;
 
@@ -18,9 +20,9 @@ public class TestService {
     @Resource
     private EasyService easyService;
 
-    @SentinelResource("laugh")
+    @SentinelResource(value = "laugh", entryType = EntryType.IN, fallback = "laughFallback")
     public String laugh(int i) {
-        System.out.println(echoService.echo(String.valueOf(i)));
+        System.out.println(echoService.echo(i));
         /*
             这里调用其它服务是为了验证 Sentinel 簇点链路是否会嵌套记录同个对象里的资源，
             验证后是不会嵌套，比如：
@@ -34,4 +36,17 @@ public class TestService {
         }
     }
 
+    /**
+     * BlockException 的处理方法
+     * @param i 入参
+     * @param blockException 快异常
+     * @return String
+     */
+    public static String laughBlockHandler(int i, BlockException blockException) {
+        return "error:BlockException...";
+    }
+
+    public String laughFallback(int i) {
+        return "@SentinelResource fallback test...";
+    }
 }

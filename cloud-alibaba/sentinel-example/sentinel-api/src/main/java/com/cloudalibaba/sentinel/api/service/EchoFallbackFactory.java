@@ -16,7 +16,7 @@ public class EchoFallbackFactory implements FallbackFactory<EchoService> {
     public EchoService create(Throwable cause) {
         return new EchoService() {
             @Override
-            public String echo(String id) {
+            public String echo(int id) {
                 log.error("Throw exception:", cause);
                 return "echo RPC error, fallback!!!";
             }
