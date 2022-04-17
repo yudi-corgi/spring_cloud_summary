@@ -1,0 +1,51 @@
+server:
+  port: 8094
+spring:
+  application:
+    name: storage-service
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://119.91.138.217:3306/seata?useUnicode=true&characterEncoding=utf8&allowMultiQueries=true&useSSL=false
+    username: root
+    password: root123456
+  cloud:
+    nacos:
+      server-addr: 119.91.138.217:8848
+mybatis-plus:
+  global-config:
+    db-config:
+      insert-strategy: not_null
+      update-strategy: not_null
+      id-type: auto
+logging:
+  level:
+    org.springframework.cloud.alibaba.seata.web: debug
+    com.cloudalibaba.seata: debug
+  pattern:
+    dateformat: MM-dd HH:mm:ss:SSS
+seata:
+  # Seata 注册信息
+  registry:
+    type: nacos                           # Seata 注册类型
+    nacos:                                # Nacos 配置信息
+      server-addr: 119.91.138.217:8848    # Nacos 地址
+      namespace: ""                       # Seata 服务所在命名空间
+      group: DEFAULT_GROUP                # Seata 服务所在分组
+      application: seata-server           # Seata 服务名称
+      username: nacos                     # Nacos 账户
+      password: nacos                     # Nacos 密码
+  tx-service-group: seata-example         # 事务组名称，根据此获取 TC 服务的集群名称
+  service:
+    vgroup-mapping:       # 配置事务组与 Seata 服务 cluster 的映射关系
+      seata-example: GZ   # Key：事务组名称，value：Seata（TC）服务集群名称
+  # Seata 配置信息
+#  config:
+#    type: nacos
+#    nacos:
+#      server-addr: 119.91.138.217:8848
+#      username: nacos
+#      password: nacos
+#      group: SEATA_GROUP
+#      data-id: seataServer.properties
+#  # Seata 分布式事务模型：支持 XA、AT（默认）、TCC、SAGA
+  data-source-proxy-mode: AT
