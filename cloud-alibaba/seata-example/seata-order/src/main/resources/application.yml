@@ -49,3 +49,9 @@ seata:
 #      data-id: seataServer.properties
 #  # Seata 分布式事务模型：支持 XA、AT（默认）、TCC、SAGA
   data-source-proxy-mode: AT
+feign:
+  client:
+    config:
+      default:
+        connectTimeout: 30000
+        readTimeout: 30000

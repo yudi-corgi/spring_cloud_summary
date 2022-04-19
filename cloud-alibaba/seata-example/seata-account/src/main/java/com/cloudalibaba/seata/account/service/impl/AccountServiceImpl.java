@@ -6,7 +6,6 @@ import com.cloudalibaba.seata.account.mapper.AccountMapper;
 import com.cloudalibaba.seata.account.service.AccountService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 
@@ -22,7 +21,7 @@ public class AccountServiceImpl extends ServiceImpl<AccountMapper, Account> impl
     private AccountMapper accountMapper;
 
     @Override
-    @Transactional(rollbackFor = Exception.class)
+    // @Transactional(rollbackFor = Exception.class)
     public void deduct(String userId, int money) {
         log.info("开始扣款");
         try {

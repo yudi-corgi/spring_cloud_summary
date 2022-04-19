@@ -17,6 +17,6 @@ public interface StorageMapper extends BaseMapper<Storage> {
      * @param count 商品数量
      * @return 影响行数
      */
-    @Update("update storage_tbl set `count` = `count` - #{count} where commodity_code = #{code}")
+    @Update("update storage set `count` = `count` - #{count} where commodity_code = #{code}")
     int deduct(@Param("code") String commodityCode, @Param("count") int count);
 }

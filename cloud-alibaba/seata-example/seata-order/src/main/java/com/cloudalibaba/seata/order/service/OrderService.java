@@ -1,12 +1,13 @@
 package com.cloudalibaba.seata.order.service;
 
+import com.baomidou.mybatisplus.extension.service.IService;
 import com.cloudalibaba.seata.order.domain.Order;
 
 /**
  * @author YUDI-Corgi
  * @description Order 服务接口
  */
-public interface OrderService {
+public interface OrderService extends IService<Order> {
 
     /**
      * 创建订单

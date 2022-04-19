@@ -7,6 +7,7 @@ import com.cloudalibaba.seata.order.domain.Order;
 import com.cloudalibaba.seata.order.mapper.OrderMapper;
 import com.cloudalibaba.seata.order.service.OrderService;
 import feign.FeignException;
+import io.seata.spring.annotation.GlobalTransactional;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
@@ -31,7 +32,7 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
     }
 
     @Override
-    // @GlobalTransactional
+    @GlobalTransactional(name = "XA-CreateOrder")
     public Long create(Order order) {
         // 创建订单
         orderMapper.insert(order);
@@ -40,7 +41,6 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
             accountClient.deduct(order.getUserId(), order.getMoney());
             // 扣库存
             storageClient.deduct(order.getCommodityCode(), order.getCount());
-
         } catch (FeignException e) {
             log.error("下单失败，原因:{}", e.contentUTF8(), e);
             throw new RuntimeException(e.contentUTF8(), e);
