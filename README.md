@@ -27,6 +27,9 @@
 - [x] Bus
 - [x] Nacos
 
+#### 分布式事务
+- [x] Seata
+
 #### 服务追踪
 - [x] Sleuth 
 - [x] Zipkin
