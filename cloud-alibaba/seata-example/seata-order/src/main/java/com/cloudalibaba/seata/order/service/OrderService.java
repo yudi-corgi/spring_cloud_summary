@@ -16,4 +16,10 @@ public interface OrderService extends IService<Order> {
      */
     Long create(Order order);
 
+    /**
+     * 创建订单（TCC）
+     * @param order 订单信息
+     * @return 订单ID
+     */
+    Long tccCreate(Order order);
 }

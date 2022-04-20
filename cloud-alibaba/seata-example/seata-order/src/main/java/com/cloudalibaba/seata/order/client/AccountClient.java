@@ -18,4 +18,12 @@ public interface AccountClient {
      */
     @PutMapping("/account/{userId}/{money}")
     void deduct(@PathVariable("userId") String userId, @PathVariable("money") Integer money);
+
+    /**
+     * 金额扣减（TCC）
+     * @param userId 用户ID
+     * @param money 扣减金额
+     */
+    @PutMapping("/account/tcc/{userId}/{money}")
+    void tccDeduct(@PathVariable("userId") String userId, @PathVariable("money") Integer money);
 }

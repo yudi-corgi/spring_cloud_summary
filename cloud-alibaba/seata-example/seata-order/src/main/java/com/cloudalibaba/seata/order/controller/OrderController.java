@@ -28,4 +28,9 @@ public class OrderController {
         return ResponseEntity.status(HttpStatus.CREATED).body(orderId);
     }
 
+    @PostMapping("/tcc")
+    public ResponseEntity<Long> tccCreateOrder(Order order){
+        Long orderId = orderService.tccCreate(order);
+        return ResponseEntity.status(HttpStatus.CREATED).body(orderId);
+    }
 }
