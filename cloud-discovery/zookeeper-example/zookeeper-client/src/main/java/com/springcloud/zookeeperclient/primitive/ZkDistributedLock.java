@@ -55,6 +55,9 @@ public class ZkDistributedLock {
         // 判断事件是否为节点删除
         if(event.getType() == Watcher.Event.EventType.NodeDeleted){
             synchronized (lock){
+                // xxx: 这里使用 notifyAll 性能不太好，应该使用 LockSupport#unpark(t) 来唤醒指定的线程
+                // 避免所有线程被唤醒后又重新走了一遍创建、获取锁的流程；
+                // 而使用 LockSupport 的缺点就是需要保存所有节点对应的线程，以便能够指定线程唤醒
                 lock.notifyAll();
             }
         }
