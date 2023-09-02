@@ -25,6 +25,7 @@
         <module>cloud-config</module>
         <module>cloud-gateway</module>
         <module>cloud-tracking</module>
+        <module>cloud-apollo</module>
     </modules>
 
     <properties>
@@ -36,6 +37,7 @@
         <curator.version>5.1.0</curator.version>
         <mybatis.plus.version>3.5.1</mybatis.plus.version>
         <mysql.version>8.0.11</mysql.version>
+        <hutool.version>5.8.16</hutool.version>
     </properties>
 
     <dependencies>
@@ -117,6 +119,16 @@
                 <artifactId>slf4j-api</artifactId>
                 <version>1.7.30</version>
             </dependency>
+
+            <!-- HuTool -->
+            <dependency>
+                <groupId>cn.hutool</groupId>
+                <artifactId>hutool-bom</artifactId>
+                <version>${hutool.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+
         </dependencies>
     </dependencyManagement>
 
