@@ -26,6 +26,7 @@
 - [x] Config 
 - [x] Bus
 - [x] Nacos
+- [ ] Apollo
 
 #### 分布式事务
 - [x] Seata
