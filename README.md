@@ -27,6 +27,7 @@
 - [x] Bus
 - [x] Nacos
 - [ ] Apollo
+  - 在该模块简单添加了 DeferredResult 使用示例，因为 Apollo 客户端与服务端的长连接便是基于此实现
 
 #### 分布式事务
 - [x] Seata
