@@ -1,0 +1,6 @@
+spring:
+  rabbitmq:
+    addresses: 116.205.181.47
+    username: admin
+    password: admin123
+    port: 5672

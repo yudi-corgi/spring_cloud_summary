@@ -26,6 +26,7 @@
         <module>cloud-gateway</module>
         <module>cloud-tracking</module>
         <module>cloud-apollo</module>
+        <module>cloud-stream</module>
     </modules>
 
     <properties>
