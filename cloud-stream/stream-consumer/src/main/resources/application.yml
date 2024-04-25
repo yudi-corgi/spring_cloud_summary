@@ -2,6 +2,8 @@ server:
   port: 8080
 
 spring:
+  application:
+    name: stream-consumer
   rabbitmq:
     addresses: 116.205.181.47
     username: admin

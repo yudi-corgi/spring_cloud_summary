@@ -2,6 +2,8 @@ server:
   port: 8090
 
 spring:
+  application:
+    name: stream-producer
   rabbitmq:
     addresses: 116.205.181.47
     username: admin

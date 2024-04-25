@@ -2,6 +2,7 @@ package org.springcloud.stream.controller;
 
 import org.springframework.cloud.stream.messaging.Source;
 import org.springframework.messaging.Message;
+import org.springframework.messaging.MessageChannel;
 import org.springframework.messaging.support.MessageBuilder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -24,7 +25,7 @@ public class SendController {
         // 构建消息
         Message<String> msg = MessageBuilder.withPayload(name).build();
         // 发送
-        source.output().send(msg);
+        source.output().send(msg, 3000);
     }
 
 }
