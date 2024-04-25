@@ -32,6 +32,9 @@
 #### 分布式事务
 - [x] Seata
 
+#### 消息路由
+- [ ] Stream-RabbitMQ
+
 #### 服务追踪
 - [x] Sleuth 
 - [x] Zipkin
