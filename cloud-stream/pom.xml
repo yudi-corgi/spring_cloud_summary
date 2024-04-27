@@ -20,4 +20,17 @@
     <build>
         <finalName>cloud-stream</finalName>
     </build>
+
+    <properties>
+        <jackson.version>2.16.1</jackson.version>
+    </properties>
+
+    <dependencies>
+        <dependency>
+            <groupId>org.json</groupId>
+            <artifactId>json</artifactId>
+            <version>20231013</version>
+        </dependency>
+    </dependencies>
+
 </project>
