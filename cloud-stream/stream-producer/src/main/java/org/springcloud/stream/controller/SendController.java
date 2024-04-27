@@ -1,9 +1,9 @@
 package org.springcloud.stream.controller;
 
-import org.springframework.cloud.stream.messaging.Source;
+import org.springframework.cloud.stream.function.StreamBridge;
 import org.springframework.messaging.Message;
-import org.springframework.messaging.MessageChannel;
 import org.springframework.messaging.support.MessageBuilder;
+import org.springframework.util.MimeType;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -18,14 +18,14 @@ import javax.annotation.Resource;
 public class SendController {
 
     @Resource
-    private Source source;
+    private StreamBridge streamBridge;
 
     @GetMapping("/test")
     public void test(String name) {
         // 构建消息
         Message<String> msg = MessageBuilder.withPayload(name).build();
-        // 发送
-        source.output().send(msg, 3000);
+        // StreamBridge：一个允许用户将数据发送到输出绑定的类
+        streamBridge.send("stringConsumer-out-0", msg, MimeType.valueOf("application/json"));
     }
 
 }

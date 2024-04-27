@@ -11,5 +11,6 @@ spring:
     port: 5672
   cloud:
     stream:
+      # 绑定：stringConsumer-out-0 是绑定名称，out 表示它是输出（Producer），test-topic 则是交换机
       bindings:
-        output.destination: test-topic
+        stringConsumer-out-0.destination: test-topic

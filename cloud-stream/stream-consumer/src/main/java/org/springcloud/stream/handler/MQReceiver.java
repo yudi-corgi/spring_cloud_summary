@@ -1,8 +1,9 @@
 package org.springcloud.stream.handler;
 
-import org.springframework.cloud.stream.annotation.StreamListener;
-import org.springframework.cloud.stream.messaging.Sink;
+import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Component;
+
+import java.util.function.Consumer;
 
 /**
  * 消息接收处理器
@@ -11,9 +12,9 @@ import org.springframework.stereotype.Component;
 @Component
 public class MQReceiver {
 
-    @StreamListener(Sink.INPUT)
-    public void stringConsumer(Object msg) {
-        System.out.println("接收到消息：" + msg);
+    @Bean
+    public Consumer<Object> stringConsumer() {
+        return (obj) -> System.out.println("接收到消息：" + obj);
     }
 
 }
