@@ -11,6 +11,23 @@ spring:
     port: 5672
   cloud:
     stream:
+      # Supplier 轮询全局配置（本项目 Stream 是 3.0.4 版本，在 3.2.x 以上之后，轮询配置放在 spring.Integration，详看 IntegrationProperties.Poller）
+      poller:
+        fixed-delay: 2000
+        max-messages-per-poll: 1
       # 绑定：stringConsumer-out-0 是绑定名称，out 表示它是输出（Producer），test-topic 则是交换机
+      function:
+        definition: stringConsumer; toUpperCase;
       bindings:
-        stringConsumer-out-0.destination: test-topic
+        stringConsumer-out-0:
+          destination: test-topic
+        toUpperCase-out-0:
+          destination: text-topic
+          # 该轮询配置只对 toUpperCase 绑定有效
+          #producer:
+            # poller:
+              # fixed-delay: 5000           # 发送间隔
+              # max-messages-per-poll: 1    # 每次轮询发送的消息条数
+              # cron: 1 0 0 0 0 0         # CRON 表达式指定发送周期
+              # initial-delay: 1000         # 初始发送延迟时间
+              # time-unit: MILLISECONDS     # 以上设置的时间单位

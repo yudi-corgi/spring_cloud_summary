@@ -15,11 +15,15 @@ spring:
       # 因为 Stream 会自动检测以上三种类型的 Bean 并进行自动绑定，而实际当中可能并非所有 Bean 都要被检测并绑定
       # 指定多个处理器时，用分号分割，若想合并多个处理器为一起，则用管道 | 拼接
       function:
-        definition: stringConsumer
+        definition: stringConsumer; toUpperCase
       bindings:
         # 绑定：stringConsumer-in-0 是绑定名称，in 表示它是输入（Consumer）
         # test-topic 是交换机，group 表示队列名称用 {destination}.{group} 的方式拼接而成，否则为 {destination}.{随机字符}
         stringConsumer-in-0:
           destination: test-topic
           group: stream-demo
+          content-type: application/json
+        toUpperCase-in-0:
+          destination: upper-topic
+          group: upper-demo
           content-type: application/json
