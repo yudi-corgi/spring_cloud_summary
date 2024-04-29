@@ -15,7 +15,8 @@ import org.springframework.stereotype.Component;
 public class CustomChannelInterceptor {
 
     /**
-     * <code>@GlobalChannelInterceptor</code> 注解定义了哪些绑定通道在发送消息时会被拦截，默认 * 匹配全部
+     * <code>@GlobalChannelInterceptor</code> 注解定义了哪些绑定通道在发送消息时会被拦截，默认 * 匹配全部。
+     * stringConsumer-* 则只会匹配 stringConsumer- 开头的绑定
      * @return ChannelInterceptor
      */
     @Bean
@@ -32,6 +33,26 @@ public class CustomChannelInterceptor {
             @Override
             public void afterSendCompletion(Message<?> message, MessageChannel channel, boolean sent, Exception ex) {
                 System.out.println("消息发送后输出内容：" + message.getPayload());
+            }
+        };
+    }
+
+    /**
+     * 匹配全部绑定
+     * @return ChannelInterceptor
+     */
+    @Bean
+    @GlobalChannelInterceptor(patterns = "*")
+    public ChannelInterceptor allChannelInterceptor() {
+        return new ChannelInterceptor() {
+            @Override
+            public Message<?> preSend(Message<?> message, MessageChannel channel) {
+                return ChannelInterceptor.super.preSend(message, channel);
+            }
+
+            @Override
+            public void postSend(Message<?> message, MessageChannel channel, boolean sent) {
+                ChannelInterceptor.super.postSend(message, channel, sent);
             }
         };
     }
