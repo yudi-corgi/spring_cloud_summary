@@ -1,6 +1,9 @@
 package org.springcloud.stream.handler;
 
+import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Component;
+
+import java.util.function.Supplier;
 
 /**
  * 消息生产者
@@ -9,10 +12,10 @@ import org.springframework.stereotype.Component;
 @Component
 public class MQProducer {
 
-    // @Bean
-    // public Supplier<String> toUpperCase() {
-    //     return () -> "Hello, Spring Cloud Stream!";
-    // }
+    @Bean
+    public Supplier<String> toUpperCase() {
+        return () -> "Hello, Spring Cloud Stream!";
+    }
 
     // @Bean
     // public Function<String, String> toUpperCase() {

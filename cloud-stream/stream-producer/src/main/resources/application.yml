@@ -26,12 +26,12 @@ spring:
         max-messages-per-poll: 1
       # 绑定：stringConsumer-out-0 是绑定名称，out 表示它是输出（Producer），test-topic 则是交换机
       function:
-        definition: stringConsumer; toUpperCase;
+        definition: stringConsumer;toUpperCase;
       bindings:
         stringConsumer-out-0:
           destination: test-topic
         toUpperCase-out-0:
-          destination: text-topic
+          destination: upper-topic
           # 该轮询配置只对 toUpperCase 绑定有效
           #producer:
             # poller:
