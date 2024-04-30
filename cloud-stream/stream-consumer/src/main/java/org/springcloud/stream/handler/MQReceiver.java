@@ -17,8 +17,11 @@ public class MQReceiver {
         return (obj) -> System.out.println("消息消费：" + obj);
     }
 
+    /**
+     * 消费 Producer 中 stringSupplier 发送的消息
+     */
     @Bean
-    public Consumer<Object> toUpperCase() {
+    public Consumer<Object> stringSupplier() {
         return (obj) -> System.out.println("toUpperCase 接收到消息：" + obj.toString().toUpperCase());
     }
 

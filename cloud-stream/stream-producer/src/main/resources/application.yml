@@ -22,17 +22,17 @@ spring:
       # Supplier 轮询全局配置（本项目 Stream 是 3.0.4 版本）
       # 在 3.2.x 以上之后，轮询配置放在 spring.Integration，如上方注释，详看 IntegrationProperties.Poller）
       poller:
-        fixed-delay: 2000
+        fixed-delay: 5000
         max-messages-per-poll: 1
       # 绑定：stringConsumer-out-0 是绑定名称，out 表示它是输出（Producer），test-topic 则是交换机
       function:
-        definition: stringConsumer;toUpperCase;
+        definition: stringConsumer;stringSupplier
       bindings:
         stringConsumer-out-0:
-          destination: test-topic
-        toUpperCase-out-0:
-          destination: upper-topic
-          # 该轮询配置只对 toUpperCase 绑定有效
+          destination: consumer-topic
+        stringSupplier-out-0:
+          destination: supplier-topic
+          # 该轮询配置只对 stringSupplier 绑定有效
           #producer:
             # poller:
               # fixed-delay: 5000           # 发送间隔，其下 units 属性可控制时间单位

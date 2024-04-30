@@ -33,7 +33,7 @@ public class SendController {
         // 构建消息
         Message<String> msg = MessageBuilder.withPayload("upper nothing").build();
         // StreamBridge：一个允许用户将数据发送到输出绑定的类
-        streamBridge.send("toUpperCase-out-0", msg, MimeType.valueOf("application/json"));
+        streamBridge.send("toUpperCase-in-0", msg, MimeType.valueOf("application/json"));
     }
 
 }

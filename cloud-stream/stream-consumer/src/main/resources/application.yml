@@ -14,17 +14,17 @@ spring:
       # 填写消息处理器名称（函数名），指定哪些 Consumer/Supplier/Function Bean 要作为消息处理器
       # 因为 Stream 会自动检测以上三种类型的 Bean 并进行自动绑定，而实际当中可能并非所有 Bean 都要被检测并绑定
       # 指定多个处理器时，用分号分割，若想合并多个处理器为一起，则用管道 | 拼接
-      # 注意：因为是将整个 value 当作值用分号进行分割，不要强迫症加上空格，比如：stringConsumer; toUpperCase，这样分割后是会把 toUpperCase 前面的空格也当作函数处理器名称一部分
+      # 注意：因为是将整个 value 当作值用分号进行分割，不要强迫症加上空格，比如：stringConsumer; stringSupplier，这样分割后是会把 stringSupplier 前面的空格也当作函数处理器名称的一部分
       function:
-        definition: stringConsumer;toUpperCase
+        definition: stringConsumer;stringSupplier
       bindings:
         # 绑定：stringConsumer-in-0 是绑定名称，in 表示它是输入（Consumer）
-        # test-topic 是交换机，group 表示队列名称用 {destination}.{group} 的方式拼接而成，否则为 {destination}.{随机字符}
+        # consumer-topic 是交换机，group 表示队列名称用 {destination}.{group} 的方式拼接而成，否则为 {destination}.{随机字符}
         stringConsumer-in-0:
-          destination: test-topic
-          group: stream-demo
+          destination: consumer-topic
+          group: consumer-demo
           content-type: application/json
-        toUpperCase-in-0:
-          destination: upper-topic
-          group: upper-demo
+        stringSupplier-in-0:
+          destination: supplier-topic
+          group: supplier-demo
           content-type: application/json
