@@ -26,7 +26,7 @@ spring:
         max-messages-per-poll: 1
       # 绑定：stringConsumer-out-0 是绑定名称，out 表示它是输出（Producer），test-topic 则是交换机
       function:
-        definition: stringSupplier;toUpperCase;msgPrinter
+        definition: stringSupplier;toUpperCase
       bindings:
         # Function 配置，Function 包含输入输出，输出同样指定某个 Consumer#destination
         toUpperCase-in-0:
