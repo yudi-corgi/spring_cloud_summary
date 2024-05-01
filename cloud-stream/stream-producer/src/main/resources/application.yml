@@ -24,13 +24,29 @@ spring:
       poller:
         fixed-delay: 5000
         max-messages-per-poll: 1
-      # 绑定：stringConsumer-out-0 是绑定名称，out 表示它是输出（Producer），test-topic 则是交换机
       function:
-        definition: stringSupplier;toUpperCase
+        # 声明检查的函数处理器，| 管道符表示连接处理器
+        # addDash 和 toTrim 都是 Function 类型，表示前者的输出会作为后者的输入
+        # 在这里的示例中，toTrim 的输出指向了 allPrinter 的输入，因此会被其消费
+        definition: stringSupplier;toUpperCase;addDash|toTrim;allPrinter
+        # 为绑定声明别名
+        bindings:
+          addDash|toTrim-in-0: inTrimAndLowerCase
+          addDash|toTrim-out-0: outTrimAndLowerCase
       bindings:
+        # 指定好组合 Function 与 Consumer 的输入输出通道
+        inTrimAndLowerCase:
+          destination: trim-lower-topic
+        outTrimAndLowerCase:
+          destination: printer-topic
+        allPrinter-in-0:
+          destination: printer-topic
         # Function 配置，Function 包含输入输出，输出同样指定某个 Consumer#destination
-        toUpperCase-in-0.destination: function-topic
-        toUpperCase-out-0.destination: msg-topic
+        toUpperCase-in-0:
+          destination: function-topic
+          group: upper-demo
+        toUpperCase-out-0:
+          destination: msg-topic
         # Supplier 配置，Supplier 只负责输出（生产），因此 destination 指定某个 Consumer#destination 即可
         stringSupplier-out-0:
           destination: supplier-topic

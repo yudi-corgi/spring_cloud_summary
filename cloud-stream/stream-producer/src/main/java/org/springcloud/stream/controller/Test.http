@@ -1,5 +1,8 @@
-#### 测试
+### 测试
 GET localhost:8090/send/test?name=Hello,Word
 
-#### 测试
+### 测试
 GET localhost:8090/send/upper
+
+### 测试
+GET localhost:8090/send/lower

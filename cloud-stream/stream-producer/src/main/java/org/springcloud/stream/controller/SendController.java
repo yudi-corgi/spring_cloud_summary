@@ -29,11 +29,19 @@ public class SendController {
     }
 
     @GetMapping("/upper")
-    public void test() {
+    public void upper() {
         // 构建消息
         Message<String> msg = MessageBuilder.withPayload("upper nothing").build();
         // StreamBridge：一个允许用户将数据发送到输出绑定的类
         streamBridge.send("function-topic", msg, MimeType.valueOf("application/json"));
+    }
+
+    @GetMapping("/lower")
+    public void lower() {
+        // 构建消息
+        Message<String> msg = MessageBuilder.withPayload("LOWER AnyThing.").build();
+        // StreamBridge：一个允许用户将数据发送到输出绑定的类
+        streamBridge.send("trim-lower-topic", msg, MimeType.valueOf("application/json"));
     }
 
 }
