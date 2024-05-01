@@ -29,10 +29,8 @@ spring:
         definition: stringSupplier;toUpperCase
       bindings:
         # Function 配置，Function 包含输入输出，输出同样指定某个 Consumer#destination
-        toUpperCase-in-0:
-          destination: function-topic
-        toUpperCase-out-0:
-          destination: msg-topic
+        toUpperCase-in-0.destination: function-topic
+        toUpperCase-out-0.destination: msg-topic
         # Supplier 配置，Supplier 只负责输出（生产），因此 destination 指定某个 Consumer#destination 即可
         stringSupplier-out-0:
           destination: supplier-topic
