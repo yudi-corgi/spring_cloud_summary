@@ -25,4 +25,9 @@ public class MQReceiver {
         return (obj) -> System.out.println("toUpperCase 接收到消息：" + obj.toString().toUpperCase());
     }
 
+    @Bean
+    public Consumer<Object> msgPrinter() {
+        return (obj) -> System.out.println("upperToString 接收到消息：" + obj.toString());
+    }
+
 }

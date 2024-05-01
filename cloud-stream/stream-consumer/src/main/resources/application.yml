@@ -16,10 +16,14 @@ spring:
       # 指定多个处理器时，用分号分割，若想合并多个处理器为一起，则用管道 | 拼接
       # 注意：因为是将整个 value 当作值用分号进行分割，不要强迫症加上空格，比如：stringConsumer; stringSupplier，这样分割后是会把 stringSupplier 前面的空格也当作函数处理器名称的一部分
       function:
-        definition: stringConsumer;stringSupplier
+        definition: stringConsumer;stringSupplier;msgPrinter
       bindings:
-        # 绑定：stringConsumer-in-0 是绑定名称，in 表示它是输入（Consumer）
-        # consumer-topic 是交换机，group 表示队列名称用 {destination}.{group} 的方式拼接而成，否则为 {destination}.{随机字符}
+        # 绑定：msgPrinter-in-0 是绑定名称，in 表示它是输入（Consumer），consumer-topic 是交换机
+        # group 表示队列名称用 {destination}.{group} 的方式拼接而成，否则为 {destination}.{随机字符}
+        # 所有发送到 destination=msg-topic 都会由此消费者处理
+        msgPrinter-in-0:
+          destination: msg-topic
+          group: msg-printer
         stringConsumer-in-0:
           destination: consumer-topic
           group: consumer-demo
