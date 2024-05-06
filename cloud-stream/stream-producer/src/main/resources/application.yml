@@ -47,6 +47,9 @@ spring:
           group: upper-demo
         toUpperCase-out-0:
           destination: msg-topic
+        # Consumer 配置
+        stringConsumer-out-0:
+          destination: consumer-topic
         # Supplier 配置，Supplier 只负责输出（生产），因此 destination 指定某个 Consumer#destination 即可
         stringSupplier-out-0:
           destination: supplier-topic
@@ -58,13 +61,13 @@ spring:
               # max-messages-per-poll: 1    # 每次轮询发送的消息条数
               # cron: 1 0 0 0 0 0           # CRON 表达式指定发送周期
       # 定义 Binder，类型 rabbit
-      binders:
-        rabbit:
-          type: rabbit
-          environment:
-            spring:
-              rabbitmq:
-                addresses: localhost
-                username: guest
-                password: guest
-                port: 5672
+#      binders:
+#        rabbit:
+#          type: rabbit
+#          environment:
+#            spring:
+#              rabbitmq:
+#                addresses: localhost
+#                username: guest
+#                password: guest
+#                port: 5672
