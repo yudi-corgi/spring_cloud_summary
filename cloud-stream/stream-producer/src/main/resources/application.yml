@@ -9,26 +9,23 @@ spring:
     username: admin
     password: admin123
     port: 5672
-#  integration:
-#    poller:
-#      cron: 1 0 0 0 0 0          # CRON 表达式
-#      fixed-delay: 2             # 固定延迟
-#      fixed-rate: 2              # 固定频率
-#      initial-delay: 5           # 初始延迟
-#      max-messages-per-poll: 1   # 每次轮询的最大消息条数
-#      receive-timeout: 2         # 接收超时时间
+  # Supplier 全局轮询配置
+  # integration:
+  #   poller:
+      # cron: 1 * * * * ?          # CRON 表达式
+      # fixed-delay: 5s            # 固定延迟，与 fixed-rate、cron 互斥
+      # fixed-rate: 2s             # 固定频率，与 fixed-delay、cron 互斥
+      # initial-delay: 5           # 初始延迟，应用于 fixed-delay、fixed-rate，对 cron 无效
+      # max-messages-per-poll: 2   # 每次轮询的最大消息条数
+      # receive-timeout: 5s        # 接收超时时间
   cloud:
+    function:
+      # 声明检查的函数处理器，| 管道符表示连接处理器
+      # addDash 和 toTrim 都是 Function 类型，表示前者的输出会作为后者的输入
+      # 在这里的示例中，toTrim 的输出指向了 allPrinter 的输入，因此会被其消费
+      definition: stringSupplier;toUpperCase;addDash|toTrim;allPrinter
     stream:
-      # Supplier 轮询全局配置（本项目 Stream 是 3.0.4 版本）
-      # 在 3.2.x 以上之后，轮询配置放在 spring.Integration，如上方注释，详看 IntegrationProperties.Poller）
-      poller:
-        fixed-delay: 5000
-        max-messages-per-poll: 1
       function:
-        # 声明检查的函数处理器，| 管道符表示连接处理器
-        # addDash 和 toTrim 都是 Function 类型，表示前者的输出会作为后者的输入
-        # 在这里的示例中，toTrim 的输出指向了 allPrinter 的输入，因此会被其消费
-        definition: stringSupplier;toUpperCase;addDash|toTrim;allPrinter
         # 为绑定声明别名
         bindings:
           addDash|toTrim-in-0: inTrimAndLowerCase
@@ -54,20 +51,20 @@ spring:
         stringSupplier-out-0:
           destination: supplier-topic
           # 该轮询配置只对 stringSupplier 绑定有效
-          #producer:
-            # poller:
-              # fixed-delay: 5000           # 发送间隔，其下 units 属性可控制时间单位
-              # initial-delay: 1000         # 初始发送延迟时间，，其下 units 属性可控制时间单位
-              # max-messages-per-poll: 1    # 每次轮询发送的消息条数
-              # cron: 1 0 0 0 0 0           # CRON 表达式指定发送周期
+          # producer:
+          #   poller:
+          #     fixed-delay: 10s            # 发送间隔，默认 1s
+          #     initial-delay: 1s           # 初始发送延迟时间，默认 0s，其下 units 属性可控制时间单位
+          #     max-messages-per-poll: 1    # 每次轮询发送的消息条数，默认 1 条
+          #     cron: 0/1 * * * * ?         # CRON 表达式指定发送周期，比 fixed-delay 优先级更高
       # 定义 Binder，类型 rabbit
-#      binders:
-#        rabbit:
-#          type: rabbit
-#          environment:
-#            spring:
-#              rabbitmq:
-#                addresses: localhost
-#                username: guest
-#                password: guest
-#                port: 5672
+      # binders:
+      #   rabbit:
+      #     type: rabbit
+      #     environment:
+      #       spring:
+      #         rabbitmq:
+      #           addresses: localhost
+      #           username: guest
+      #           password: guest
+      #           port: 5672
