@@ -1,8 +1,13 @@
 package org.springcloud.stream.handler;
 
+import com.rabbitmq.client.Channel;
 import org.springframework.context.annotation.Bean;
+import org.springframework.messaging.Message;
+import org.springframework.messaging.MessageHeaders;
 import org.springframework.stereotype.Component;
 
+import java.io.IOException;
+import java.util.Optional;
 import java.util.function.Consumer;
 
 /**
@@ -21,8 +26,21 @@ public class MQReceiver {
      * 消费 Producer 中 stringSupplier 发送的消息
      */
     @Bean
-    public Consumer<Object> stringSupplier() {
-        return (obj) -> System.out.println("toUpperCase 接收到消息：" + obj.toString().toUpperCase());
+    public Consumer<Message<Object>> stringSupplier() {
+        return (obj) -> {
+            System.out.println("toUpperCase 接收到消息：" + obj.getPayload());
+            MessageHeaders headers = obj.getHeaders();
+            Channel amqpChannel = headers.get("amqp_channel", Channel.class);
+            Long amqpDeliveryTag = headers.get("amqp_deliveryTag", Long.class);
+
+            try {
+                // 手动应答
+                assert amqpChannel != null;
+                amqpChannel.basicAck(Optional.ofNullable(amqpDeliveryTag).orElse(1L), false);
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        };
     }
 
     @Bean
