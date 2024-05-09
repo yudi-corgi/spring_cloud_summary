@@ -29,6 +29,7 @@ public class MQReceiver {
     public Consumer<Message<Object>> stringSupplier() {
         return (obj) -> {
             System.out.println("toUpperCase 接收到消息：" + obj.getPayload());
+            // 如果需要手动应答、或者获取连接通道本身信息的，则需要依赖 Message<T> 对象
             MessageHeaders headers = obj.getHeaders();
             Channel amqpChannel = headers.get("amqp_channel", Channel.class);
             Long amqpDeliveryTag = headers.get("amqp_deliveryTag", Long.class);
