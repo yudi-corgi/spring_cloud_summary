@@ -25,6 +25,14 @@ spring:
       # 在这里的示例中，toTrim 的输出指向了 allPrinter 的输入，因此会被其消费
       definition: stringSupplier;toUpperCase;addDash|toTrim;allPrinter
     stream:
+      rabbit:
+        bindings:
+          stringConsumer-out-0:
+            producer:
+              # 指定路由键表达式 SpEL，这里的意思是 Message 的 Headers 属性 type 表示路由键
+              # 通过此来实现动态路由，当一个交换机有多个队列且路由键不同时
+              routing-key-expression: headers.type
+              routing-key: string-consumer-key
       function:
         # 为绑定声明别名
         bindings:
@@ -51,9 +59,9 @@ spring:
         stringSupplier-out-0:
           destination: supplier-topic
           # 该轮询配置只对 stringSupplier 绑定有效
-          # producer:
-          #   poller:
-          #     fixed-delay: 10s            # 发送间隔，默认 1s
+          producer:
+            poller:
+              fixed-delay: 10s            # 发送间隔，默认 1s
           #     initial-delay: 1s           # 初始发送延迟时间，默认 0s，其下 units 属性可控制时间单位
           #     max-messages-per-poll: 1    # 每次轮询发送的消息条数，默认 1 条
           #     cron: 0/1 * * * * ?         # CRON 表达式指定发送周期，比 fixed-delay 优先级更高

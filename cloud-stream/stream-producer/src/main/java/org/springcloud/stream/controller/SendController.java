@@ -23,7 +23,11 @@ public class SendController {
     @GetMapping("/test")
     public void test(String name) {
         // 构建消息
-        Message<String> msg = MessageBuilder.withPayload(name).build();
+        Message<String> msg = MessageBuilder
+                .withPayload(name)
+                // headers 属性 type 指定路由键，该属性的设置看 application.yml
+                .setHeader("type", "string-consumer-key")
+                .build();
         // StreamBridge：一个允许用户将数据发送到输出绑定的类
         // 可以指定 destination 也可以指定绑定名称
         // 若直接指定 destination，其实会动态创建输入/输出绑定，而绑定的 destination 自然就是指定的 destination，如 consumer-topic
