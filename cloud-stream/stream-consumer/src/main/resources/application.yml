@@ -22,6 +22,8 @@ spring:
           stringSupplier-in-0:
             consumer:
               acknowledge-mode: manual
+              # 未指定 group 时的匿名队列前缀，默认 anonymous，即 destination.anonymous.{base64 of UUID}
+              anonymous-group-prefix: ephemeral
       bindings:
         # 绑定：msgPrinter-in-0 是绑定名称，in 表示它是输入（Consumer），consumer-topic 是交换机
         # group 表示队列名称用 {destination}.{group} 的方式拼接而成，否则为 {destination}.{随机字符}
