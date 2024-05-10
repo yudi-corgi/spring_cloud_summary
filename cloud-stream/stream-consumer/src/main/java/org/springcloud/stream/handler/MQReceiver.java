@@ -18,8 +18,13 @@ import java.util.function.Consumer;
 public class MQReceiver {
 
     @Bean
-    public Consumer<Object> stringConsumer() {
-        return (obj) -> System.out.println("消息消费：" + obj);
+    public Consumer<Message<Object>> stringConsumer() {
+        return (obj) -> {
+            System.out.println("消息消费：" + obj.getPayload());
+            obj.getHeaders().forEach((k, v) -> {
+                System.out.println(k + ": " + v);
+            });
+        };
     }
 
     /**

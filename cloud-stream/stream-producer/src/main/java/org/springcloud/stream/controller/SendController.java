@@ -33,7 +33,7 @@ public class SendController {
         // 若直接指定 destination，其实会动态创建输入/输出绑定，而绑定的 destination 自然就是指定的 destination，如 consumer-topic
         // 而在消费者服务则是刚好有 Consumer Bean 的输入绑定声明了相同的 destination，所以消息自然就被消费了
         // 而若指定的是配置好的输出通道，则直接通过绑定关系路由消息
-        streamBridge.send("consumer-topic", msg, MimeType.valueOf("application/json"));
+        // streamBridge.send("consumer-topic", msg, MimeType.valueOf("application/json"));
         streamBridge.send("stringConsumer-out-0", msg, MimeType.valueOf("application/json"));
     }
 
