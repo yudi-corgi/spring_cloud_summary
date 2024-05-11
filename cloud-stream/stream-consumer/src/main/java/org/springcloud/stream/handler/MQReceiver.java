@@ -21,9 +21,21 @@ public class MQReceiver {
     public Consumer<Message<Object>> stringConsumer() {
         return (obj) -> {
             System.out.println("消息消费：" + obj.getPayload());
-            obj.getHeaders().forEach((k, v) -> {
-                System.out.println(k + ": " + v);
-            });
+            MessageHeaders headers = obj.getHeaders();
+            // headers.forEach((k, v) -> System.out.println(k + ": " + v));
+
+            Channel amqpChannel = headers.get("amqp_channel", Channel.class);
+            Long amqpDeliveryTag = headers.get("amqp_deliveryTag", Long.class);
+
+            int a = 1/0;
+
+            // try {
+            //     // 拒绝 ack 且不重入队列，构造死信消息
+            //     assert amqpChannel != null;
+            //     amqpChannel.basicNack(Optional.ofNullable(amqpDeliveryTag).orElse(1L), false, false);
+            // } catch (IOException e) {
+            //     throw new RuntimeException(e);
+            // }
         };
     }
 
@@ -53,5 +65,28 @@ public class MQReceiver {
     public Consumer<Object> msgPrinter() {
         return (obj) -> System.out.println("upperToString 接收到消息：" + obj.toString());
     }
+
+    @Bean
+    public Consumer<Message<Object>> deadLetterConsumer() {
+        return (obj) -> {
+            System.out.println("死信交换机处理消息：" + obj.getPayload());
+            // obj.getHeaders().forEach((k, v) -> System.out.println(k + ": " + v));
+        };
+    }
+
+    // @Bean
+    public Consumer<Message<Object>> deadLetterConsumerTwo() {
+        return (obj) -> {
+            System.out.println("死信交换机处理消息2222：" + obj.getPayload());
+            // obj.getHeaders().forEach((k, v) -> System.out.println(k + ": " + v));
+        };
+    }
+
+    // @RabbitListener(bindings = @QueueBinding(
+    //         value = @Queue(value = "consumer-demo.dlq"),
+    //         exchange = @Exchange("DLX"), key = "consumer-demo"))
+    // public void handleDlq(org.springframework.amqp.core.Message msg) {
+    //     System.out.println("hahah");
+    // }
 
 }

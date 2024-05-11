@@ -13,9 +13,10 @@ spring:
     # 填写消息处理器名称（函数名），指定哪些 Consumer/Supplier/Function Bean 要作为消息处理器
     # 因为 Stream 会自动检测以上三种类型的 Bean 并进行自动绑定，而实际当中可能并非所有 Bean 都要被检测并绑定
     # 指定多个处理器时，用分号分割，若想合并多个处理器为一起，则用管道 | 拼接
-    # 注意：因为是将整个 value 当作值用分号进行分割，不要强迫症加上空格，比如：stringConsumer; stringSupplier，这样分割后是会把 stringSupplier 前面的空格也当作函数处理器名称的一部分
+    # 注意：因为是将整个 value 当作值用分号进行分割，不要强迫症加上空格
+    # 比如：stringConsumer; stringSupplier，这样分割后是会把 stringSupplier 前面的空格也当作函数处理器名称的一部分
     function:
-      definition: stringConsumer;stringSupplier;msgPrinter
+      definition: stringConsumer;stringSupplier;msgPrinter;deadLetterConsumer
     stream:
       rabbit:
         bindings:
@@ -26,7 +27,7 @@ spring:
               anonymous-group-prefix: ephemeral
               # 只用 group 作为队列名，默认 destination.group
               queue-name-group-only: true
-              # 绑定队列到目标交换机
+              # 绑定队列到目标交换机，默认 true
               bind-queue: true
               # 队列绑定交换机的路由键，默认 #
               binding-routing-key: string-supplier-key,string-supplier-key-two
@@ -34,8 +35,35 @@ spring:
               binding-routing-key-delimiter: ","
           stringConsumer-in-0:
             consumer:
+              # 交换机类型，默认 topic
+              exchange-type: direct
               binding-routing-key: string-consumer-key
               queue-name-group-only: true
+              # 该绑定的队列的消息过期时间，单位 ms
+              ttl: 5000
+              # 是否自动声明死信队列并绑定到死信交换机，生成的死信交换机名称为 DLX（direct），死信队列为 {group}.dlq，路由键为 {group}
+              auto-bind-dlq: true
+              # 当前绑定关联的死信交换机及其队列
+              dead-letter-exchange: dead-letter-topic
+              dead-letter-exchange-type: fanout
+              dead-letter-queue-name: dead-letter-queue
+              dead-letter-routing-key: dead-letter-key
+              dlq-ttl: 5000
+          # 消费死信队列数据的输入绑定配置，主要要完全跟上面死信信息的配置一致，因为死信交换机与队列创建时用的上方配置
+          # 但对于 deadLetterConsumer 来说，它根本不知道有死信这回事，它只会监听是否已有队列且有消息可进行消费
+          # 所以当声明的配置跟上方的死信不一致时，就会提示预期的配置信息与已存在的交换机（或队列）不一致
+          deadLetterConsumer-in-0:
+            consumer:
+              exchange-type: fanout
+              queue-name-group-only: true
+              binding-routing-key: dead-letter-key
+              ttl: 5000
+          # deadLetterConsumerTwo-in-0:
+          #   consumer:
+          #     exchange-type: fanout
+          #     queue-name-group-only: true
+          #     binding-routing-key: dead-letter-key
+          #     ttl: 5000
       bindings:
         # 绑定：msgPrinter-in-0 是绑定名称，in 表示它是输入（Consumer），consumer-topic 是交换机
         # group 表示队列名称用 {destination}.{group} 的方式拼接而成，否则为 {destination}.{随机字符}
@@ -47,7 +75,18 @@ spring:
           destination: consumer-topic
           group: consumer-demo
           content-type: application/json
+          consumer:
+            # 消息重试次数，默认 3（包括第一次的接收），设 1 表示禁止重试
+            max-attempts: 3
         stringSupplier-in-0:
           destination: supplier-topic
           group: supplier-demo
           content-type: application/json
+        deadLetterConsumer-in-0:
+          destination: dead-letter-topic
+          group: dead-letter-queue
+          content-type: application/json
+        # deadLetterConsumerTwo-in-0:
+        #   destination: dead-letter-topic
+        #   group: dead-letter-queue
+        #   content-type: application/json

@@ -69,7 +69,7 @@ spring:
           # 该轮询配置只对 stringSupplier 绑定有效
           producer:
             poller:
-              fixed-delay: 5s            # 发送间隔，默认 1s
+              fixed-delay: 1m            # 发送间隔，默认 1s
           #     initial-delay: 1s           # 初始发送延迟时间，默认 0s，其下 units 属性可控制时间单位
           #     max-messages-per-poll: 1    # 每次轮询发送的消息条数，默认 1 条
           #     cron: 0/1 * * * * ?         # CRON 表达式指定发送周期，比 fixed-delay 优先级更高
