@@ -1,6 +1,8 @@
 package org.springcloud.stream.handler;
 
 import org.springframework.context.annotation.Bean;
+import org.springframework.messaging.Message;
+import org.springframework.messaging.support.MessageBuilder;
 import org.springframework.stereotype.Component;
 
 import java.util.function.Consumer;
@@ -15,8 +17,10 @@ import java.util.function.Supplier;
 public class MQProducer {
 
     @Bean
-    public Supplier<String> stringSupplier() {
-        return () -> "Hello, Spring Cloud Stream!";
+    public Supplier<Message<String>> stringSupplier() {
+        return () -> MessageBuilder.withPayload("Hello, Spring Cloud Stream!")
+                .setHeader("routingKey", "string-supplier-key")
+                .build();
     }
 
     @Bean

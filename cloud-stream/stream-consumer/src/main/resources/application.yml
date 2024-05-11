@@ -24,15 +24,18 @@ spring:
               acknowledge-mode: manual
               # 未指定 group 时的匿名队列前缀，默认 anonymous，即 destination.anonymous.{base64 of UUID}
               anonymous-group-prefix: ephemeral
+              # 只用 group 作为队列名，默认 destination.group
+              queue-name-group-only: true
               # 绑定队列到目标交换机
               bind-queue: true
-              # 队列到交换机的路由键，默认 #
+              # 队列绑定交换机的路由键，默认 #
               binding-routing-key: string-supplier-key,string-supplier-key-two
               # binding-routing-key 指定了多个路由键时的分隔符，默认 null
               binding-routing-key-delimiter: ","
           stringConsumer-in-0:
             consumer:
               binding-routing-key: string-consumer-key
+              queue-name-group-only: true
       bindings:
         # 绑定：msgPrinter-in-0 是绑定名称，in 表示它是输入（Consumer），consumer-topic 是交换机
         # group 表示队列名称用 {destination}.{group} 的方式拼接而成，否则为 {destination}.{随机字符}

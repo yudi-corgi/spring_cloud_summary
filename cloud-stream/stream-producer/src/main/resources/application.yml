@@ -29,6 +29,8 @@ spring:
         bindings:
           stringConsumer-out-0:
             producer:
+              # 设置交换机类型，默认 topic，可填 direct、fanout、headers
+              exchange-type: direct
               # 指定固定的路由键，routing-key 在 3.2.x 版本不可用，只是提前暴露了属性配置而已
               # 4.x 才可用，还是优先推荐用 routing-key-expression
               # routing-key: string-consumer-key
@@ -36,6 +38,9 @@ spring:
               # 通过此来实现动态路由，当一个交换机有多个队列且路由键不同时
               # 默认为 destination，也就是取交换机的名称作为路由键
               routing-key-expression: headers.type
+          stringSupplier-out-0:
+            producer:
+              routing-key-expression: headers.routingKey
       function:
         # 为绑定声明别名
         bindings:
@@ -64,7 +69,7 @@ spring:
           # 该轮询配置只对 stringSupplier 绑定有效
           producer:
             poller:
-              fixed-delay: 1m            # 发送间隔，默认 1s
+              fixed-delay: 5s            # 发送间隔，默认 1s
           #     initial-delay: 1s           # 初始发送延迟时间，默认 0s，其下 units 属性可控制时间单位
           #     max-messages-per-poll: 1    # 每次轮询发送的消息条数，默认 1 条
           #     cron: 0/1 * * * * ?         # CRON 表达式指定发送周期，比 fixed-delay 优先级更高
