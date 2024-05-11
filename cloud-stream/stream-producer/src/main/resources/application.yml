@@ -29,7 +29,8 @@ spring:
         bindings:
           stringConsumer-out-0:
             producer:
-              # routing-key 在 3.2.x 版本不适用，只是提前暴露了属性配置而已，4.x 才可用，还是优先推荐用 routing-key-expression
+              # 指定固定的路由键，routing-key 在 3.2.x 版本不可用，只是提前暴露了属性配置而已
+              # 4.x 才可用，还是优先推荐用 routing-key-expression
               # routing-key: string-consumer-key
               # 指定路由键表达式 SpEL，这里的意思是 Message 的 Headers 属性 type 表示路由键
               # 通过此来实现动态路由，当一个交换机有多个队列且路由键不同时
