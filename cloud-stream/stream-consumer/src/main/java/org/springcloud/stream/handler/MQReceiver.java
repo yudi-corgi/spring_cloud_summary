@@ -66,6 +66,9 @@ public class MQReceiver {
         return (obj) -> System.out.println("upperToString 接收到消息：" + obj.toString());
     }
 
+    /**
+     * 函数式接口死信消息处理
+     */
     @Bean
     public Consumer<Message<Object>> deadLetterConsumer() {
         return (obj) -> {
@@ -74,19 +77,15 @@ public class MQReceiver {
         };
     }
 
-    // @Bean
-    public Consumer<Message<Object>> deadLetterConsumerTwo() {
-        return (obj) -> {
-            System.out.println("死信交换机处理消息2222：" + obj.getPayload());
-            // obj.getHeaders().forEach((k, v) -> System.out.println(k + ": " + v));
-        };
-    }
-
+    /**
+     * SpringBoot 集成的 MQ 处理方法来处理死信消息
+     * @param msg 消息
+     */
     // @RabbitListener(bindings = @QueueBinding(
     //         value = @Queue(value = "consumer-demo.dlq"),
     //         exchange = @Exchange("DLX"), key = "consumer-demo"))
     // public void handleDlq(org.springframework.amqp.core.Message msg) {
-    //     System.out.println("hahah");
+    //     System.out.println(msg);
     // }
 
 }
