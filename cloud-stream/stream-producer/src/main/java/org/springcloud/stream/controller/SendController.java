@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
+import java.time.LocalDateTime;
 
 /**
  * @author YUDI-Corgi
@@ -41,7 +42,6 @@ public class SendController {
     public void upper() {
         // 构建消息
         Message<String> msg = MessageBuilder.withPayload("upper nothing").build();
-        // StreamBridge：一个允许用户将数据发送到输出绑定的类
         streamBridge.send("function-topic", msg, MimeType.valueOf("application/json"));
     }
 
@@ -49,8 +49,17 @@ public class SendController {
     public void lower() {
         // 构建消息
         Message<String> msg = MessageBuilder.withPayload("LOWER AnyThing.").build();
-        // StreamBridge：一个允许用户将数据发送到输出绑定的类
         streamBridge.send("trim-lower-topic", msg, MimeType.valueOf("application/json"));
+    }
+
+    @GetMapping("/delay")
+    public void delay() {
+        Message<String> msg = MessageBuilder.withPayload("This is a delay msg.")
+                // .setHeader("x-delay", 3000)
+                // .setHeader("first", 2)
+                .build();
+        System.out.println("当前时间：" + LocalDateTime.now());
+        streamBridge.send("delayConsumer-out-0", msg);
     }
 
 }

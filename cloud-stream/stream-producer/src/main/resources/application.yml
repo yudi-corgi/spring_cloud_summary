@@ -41,6 +41,11 @@ spring:
           stringSupplier-out-0:
             producer:
               routing-key-expression: headers.routingKey
+          delayConsumer-out-0:
+            producer:
+              delayed-exchange: true
+              # 消息延迟时间的计算 SpEL，消息延迟 header 属性是 x-delay，单位 ms
+              delay-expression: "headers['first'] == 1 ? 2000 : 3000"
       function:
         # 为绑定声明别名
         bindings:
@@ -63,6 +68,8 @@ spring:
         # Consumer 配置
         stringConsumer-out-0:
           destination: consumer-topic
+        delayConsumer-out-0:
+          destination: delay-topic
         # Supplier 配置，Supplier 只负责输出（生产），因此 destination 指定某个 Consumer#destination 即可
         stringSupplier-out-0:
           destination: supplier-topic

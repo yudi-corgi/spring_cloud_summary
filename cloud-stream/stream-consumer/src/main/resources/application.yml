@@ -16,7 +16,7 @@ spring:
     # 注意：因为是将整个 value 当作值用分号进行分割，不要强迫症加上空格
     # 比如：stringConsumer; stringSupplier，这样分割后是会把 stringSupplier 前面的空格也当作函数处理器名称的一部分
     function:
-      definition: stringConsumer;stringSupplier;msgPrinter;deadLetterConsumer
+      definition: stringConsumer;stringSupplier;msgPrinter;deadLetterConsumer;delayConsumer
     stream:
       rabbit:
         bindings:
@@ -36,6 +36,8 @@ spring:
               binding-routing-key-delimiter: ","
           stringConsumer-in-0:
             consumer:
+              # 交换机及队列名称前缀
+              # prefix: string-consumer
               acknowledge-mode: manual
               # 交换机类型，默认 topic
               exchange-type: direct
@@ -43,7 +45,7 @@ spring:
               queue-name-group-only: true
               # 该绑定的队列的消息过期时间，单位 ms
               ttl: 5000
-              # 是否绑定 DLQ 到死信交换机，若未指定下面的 DLQ/DlX，则自动生成的死信交换机名称为 DLX（direct），死信队列为 {group}.dlq，路由键为 {group}
+              # 是否绑定 DLQ 到死信交换机，若未指定下面的 DLQ/DlX，则自动生成的死信交换机名称为 prefix + DLX（direct），死信队列为 {group}.dlq，路由键为 {group}
               auto-bind-dlq: true
               # 自定义死信交换机及其队列
               dead-letter-exchange: dead-letter-topic
@@ -60,6 +62,11 @@ spring:
               queue-name-group-only: true
               binding-routing-key: dead-letter-key
               ttl: 5000
+          delayConsumer-in-0:
+            consumer:
+              queue-name-group-only: true
+              # 需要 RabbitMQ 开启 rabbitmq_delayed_message_exchange 插件
+              delayed-exchange: true
       bindings:
         # 绑定：msgPrinter-in-0 是绑定名称，in 表示它是输入（Consumer），consumer-topic 是交换机
         # group 表示队列名称用 {destination}.{group} 的方式拼接而成，否则为 {destination}.{随机字符}
@@ -81,4 +88,8 @@ spring:
         deadLetterConsumer-in-0:
           destination: dead-letter-topic
           group: dead-letter-queue
+          content-type: application/json
+        delayConsumer-in-0:
+          destination: delay-topic
+          group: delay-queue
           content-type: application/json
