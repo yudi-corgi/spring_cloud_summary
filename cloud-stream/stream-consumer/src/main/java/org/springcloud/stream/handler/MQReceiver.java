@@ -1,6 +1,7 @@
 package org.springcloud.stream.handler;
 
 import com.rabbitmq.client.Channel;
+import org.springframework.amqp.support.AmqpHeaders;
 import org.springframework.context.annotation.Bean;
 import org.springframework.messaging.Message;
 import org.springframework.messaging.MessageHeaders;
@@ -22,20 +23,17 @@ public class MQReceiver {
         return (obj) -> {
             System.out.println("消息消费：" + obj.getPayload());
             MessageHeaders headers = obj.getHeaders();
-            // headers.forEach((k, v) -> System.out.println(k + ": " + v));
 
-            Channel amqpChannel = headers.get("amqp_channel", Channel.class);
-            Long amqpDeliveryTag = headers.get("amqp_deliveryTag", Long.class);
+            Channel amqpChannel = headers.get(AmqpHeaders.CHANNEL, Channel.class);
+            Long amqpDeliveryTag = headers.get(AmqpHeaders.DELIVERY_TAG, Long.class);
 
-            int a = 1/0;
-
-            // try {
-            //     // 拒绝 ack 且不重入队列，构造死信消息
-            //     assert amqpChannel != null;
-            //     amqpChannel.basicNack(Optional.ofNullable(amqpDeliveryTag).orElse(1L), false, false);
-            // } catch (IOException e) {
-            //     throw new RuntimeException(e);
-            // }
+            try {
+                // 拒绝 ack 且不重入队列，构造死信消息
+                assert amqpChannel != null;
+                amqpChannel.basicNack(Optional.ofNullable(amqpDeliveryTag).orElse(1L), false, false);
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
         };
     }
 
@@ -48,8 +46,8 @@ public class MQReceiver {
             System.out.println("toUpperCase 接收到消息：" + obj.getPayload());
             // 如果需要手动应答、或者获取连接通道本身信息的，则需要依赖 Message<T> 对象
             MessageHeaders headers = obj.getHeaders();
-            Channel amqpChannel = headers.get("amqp_channel", Channel.class);
-            Long amqpDeliveryTag = headers.get("amqp_deliveryTag", Long.class);
+            Channel amqpChannel = headers.get(AmqpHeaders.CHANNEL, Channel.class);
+            Long amqpDeliveryTag = headers.get(AmqpHeaders.DELIVERY_TAG, Long.class);
 
             try {
                 // 手动应答

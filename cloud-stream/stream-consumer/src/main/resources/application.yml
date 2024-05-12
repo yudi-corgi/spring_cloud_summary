@@ -22,6 +22,7 @@ spring:
         bindings:
           stringSupplier-in-0:
             consumer:
+              # 设置手动 ACK，注意：只有配置了这一项后，Consumer 才能在接收的 Message#headers 中取到 amqp_channel
               acknowledge-mode: manual
               # 未指定 group 时的匿名队列前缀，默认 anonymous，即 destination.anonymous.{base64 of UUID}
               anonymous-group-prefix: ephemeral
@@ -35,6 +36,7 @@ spring:
               binding-routing-key-delimiter: ","
           stringConsumer-in-0:
             consumer:
+              acknowledge-mode: manual
               # 交换机类型，默认 topic
               exchange-type: direct
               binding-routing-key: string-consumer-key
