@@ -53,6 +53,10 @@ spring:
               dead-letter-queue-name: dead-letter-queue
               dead-letter-routing-key: dead-letter-key
               dlq-ttl: 5000
+              # 超过重试失败后，消息会发入 DLQ，默认 true，会将错误堆栈信息放在消息 header 中
+              republish-to-dlq: true
+              # 指示除了错误堆栈信息外，消息其它 header 所能占用的字节大小，默认 20000
+              frame-max-headroom: 20000
           # 消费死信队列数据的输入绑定配置，主要要完全跟上面死信信息的配置一致，因为死信交换机与队列创建时用的上方配置
           # 但对于 deadLetterConsumer 来说，它根本不知道有死信这回事，它只会监听是否已有队列且有消息可进行消费
           # 所以当声明的配置跟上方的死信不一致时，就会提示预期的配置信息与已存在的交换机（或队列）不一致
