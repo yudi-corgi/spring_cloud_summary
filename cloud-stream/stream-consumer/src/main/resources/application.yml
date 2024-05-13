@@ -85,6 +85,11 @@ spring:
           consumer:
             # 消息重试次数，默认 3（包括第一次的接收），设 1 表示禁止重试
             max-attempts: 3
+            # 消息重试初始间隔、最大间隔、重试时间间隔的递增乘数，单位 ms，这三者搭配起来就是实现消息重试的指数退避
+            # 若要完整控制重试操作，可以注入 Bean RetryTemplate 进行自定义实现
+            back-off-initial-interval: 1000
+            back-off-max-interval: 10000
+            back-off-multiplier: 2.0
         stringSupplier-in-0:
           destination: supplier-topic
           group: supplier-demo
