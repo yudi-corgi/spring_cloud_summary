@@ -47,6 +47,7 @@ public class CustomChannelInterceptor {
         return new ChannelInterceptor() {
             @Override
             public Message<?> preSend(Message<?> message, MessageChannel channel) {
+                System.out.println("全部匹配 - 消息发送前：" + message.getPayload());
                 return ChannelInterceptor.super.preSend(message, channel);
             }
 
