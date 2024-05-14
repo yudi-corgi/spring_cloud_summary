@@ -5,6 +5,10 @@ spring:
   application:
     name: stream-producer
   # rabbitmq:
+      # 确认机制需要依靠 Spring AMQP 实现，Stream 并不提供，Binder 本身使用的也是 Spring Boot 的 Connection Factory
+      # Stream 支持 Spring AMQP 的所有配置
+  #   publisher-returns: true
+  #   publisher-confirm-type: simple
   #   host: 116.205.181.47
   #   username: admin
   #   password: corgi123
@@ -48,6 +52,8 @@ spring:
                 password: corgi123
                 port: 5682
       rabbit:
+        binder:
+          return
         bindings:
           stringConsumer-out-0:
             producer:
