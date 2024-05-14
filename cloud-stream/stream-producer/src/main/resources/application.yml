@@ -4,11 +4,11 @@ server:
 spring:
   application:
     name: stream-producer
-  rabbitmq:
-    addresses: 116.205.181.47
-    username: admin
-    password: admin123
-    port: 5672
+  # rabbitmq:
+  #   host: 116.205.181.47
+  #   username: admin
+  #   password: corgi123
+  #   port: 5672
   # Supplier 全局轮询配置
   # integration:
   #   poller:
@@ -25,6 +25,28 @@ spring:
       # 在这里的示例中，toTrim 的输出指向了 allPrinter 的输入，因此会被其消费
       definition: stringSupplier;toUpperCase;addDash|toTrim;allPrinter
     stream:
+      # 默认使用的 Binder
+      default-binder: rabbit1
+      # 定义 Binder，类型 rabbit、kafka
+      binders:
+        rabbit1:
+          type: rabbit
+          environment:
+            spring:
+              rabbitmq:
+                host: 116.205.181.47
+                username: admin
+                password: admin123
+                port: 5672
+        rabbit2:
+          type: rabbit
+          environment:
+            spring:
+              rabbitmq:
+                host: 116.205.181.47
+                username: admin
+                password: corgi123
+                port: 5682
       rabbit:
         bindings:
           stringConsumer-out-0:
@@ -80,14 +102,7 @@ spring:
           #     initial-delay: 1s           # 初始发送延迟时间，默认 0s，其下 units 属性可控制时间单位
           #     max-messages-per-poll: 1    # 每次轮询发送的消息条数，默认 1 条
           #     cron: 0/1 * * * * ?         # CRON 表达式指定发送周期，比 fixed-delay 优先级更高
-      # 定义 Binder，类型 rabbit
-      # binders:
-      #   rabbit:
-      #     type: rabbit
-      #     environment:
-      #       spring:
-      #         rabbitmq:
-      #           addresses: localhost
-      #           username: guest
-      #           password: guest
-      #           port: 5672
+        rabbit2Consumer-out-0:
+          destination: rabbit-topic
+          # 指定要使用的 Binder
+          binder: rabbit2

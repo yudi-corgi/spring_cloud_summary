@@ -9,3 +9,6 @@ GET localhost:8090/send/lower
 
 ### 延迟消息
 GET localhost:8090/send/delay
+
+### 发送给第二个 binder
+GET localhost:8090/send/sendAnother

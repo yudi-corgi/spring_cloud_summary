@@ -97,4 +97,9 @@ public class MQReceiver {
             msg.getHeaders().forEach((k, v) -> System.out.println(k + ": " + v));
         };
     }
+
+    @Bean
+    public Consumer<Message<String>> rabbit2Consumer() {
+        return (msg) -> System.out.println(msg.getPayload());
+    }
 }

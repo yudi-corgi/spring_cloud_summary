@@ -62,4 +62,10 @@ public class SendController {
         streamBridge.send("delayConsumer-out-0", msg);
     }
 
+    @GetMapping("/sendAnother")
+    public void sendAnother() {
+        Message<String> msg = MessageBuilder.withPayload("Hello, Rabbit 2").build();
+        streamBridge.send("rabbit2Consumer-out-0", msg);
+    }
+
 }

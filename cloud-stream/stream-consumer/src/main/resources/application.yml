@@ -4,11 +4,11 @@ server:
 spring:
   application:
     name: stream-consumer
-  rabbitmq:
-    addresses: 116.205.181.47
-    username: admin
-    password: admin123
-    port: 5672
+  # rabbitmq:
+  #   host: 116.205.181.47
+  #   username: admin
+  #   password: admin123
+  #   port: 5672
   cloud:
     # 填写消息处理器名称（函数名），指定哪些 Consumer/Supplier/Function Bean 要作为消息处理器
     # 因为 Stream 会自动检测以上三种类型的 Bean 并进行自动绑定，而实际当中可能并非所有 Bean 都要被检测并绑定
@@ -16,8 +16,30 @@ spring:
     # 注意：因为是将整个 value 当作值用分号进行分割，不要强迫症加上空格
     # 比如：stringConsumer; stringSupplier，这样分割后是会把 stringSupplier 前面的空格也当作函数处理器名称的一部分
     function:
-      definition: stringConsumer;stringSupplier;msgPrinter;deadLetterConsumer;delayConsumer
+      definition: stringConsumer;stringSupplier;msgPrinter;deadLetterConsumer;delayConsumer;rabbit2Consumer
     stream:
+      # 默认使用的 Binder
+      default-binder: rabbit1
+      # 定义 Binder，类型 rabbit、kafka
+      binders:
+        rabbit1:
+          type: rabbit
+          environment:
+            spring:
+              rabbitmq:
+                host: 116.205.181.47
+                username: admin
+                password: admin123
+                port: 5672
+        rabbit2:
+          type: rabbit
+          environment:
+            spring:
+              rabbitmq:
+                host: 116.205.181.47
+                username: admin
+                password: corgi123
+                port: 5682
       rabbit:
         bindings:
           stringSupplier-in-0:
@@ -102,3 +124,7 @@ spring:
           destination: delay-topic
           group: delay-queue
           content-type: application/json
+        rabbit2Consumer-in-0:
+          destination: rabbit-topic
+          group: rabbit-queue
+          binder: rabbit2
