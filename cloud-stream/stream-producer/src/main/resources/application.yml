@@ -52,8 +52,6 @@ spring:
                 password: corgi123
                 port: 5682
       rabbit:
-        binder:
-          return
         bindings:
           stringConsumer-out-0:
             producer:
