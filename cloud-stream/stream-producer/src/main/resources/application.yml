@@ -130,3 +130,6 @@ spring:
             # 若不配置此项，那么当消费者未部署时，发送到此绑定的所有消息将丢失（也就是只有交换机，而没有绑定队列）
             required-groups:
               - prepare-queue
+        kafkaConsumer-out-0:
+          destination: test-topic
+          binder: kafka

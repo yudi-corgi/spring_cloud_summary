@@ -74,4 +74,10 @@ public class SendController {
         streamBridge.send("prepareQueue-out-0", msg);
     }
 
+    @GetMapping("/kafka/consumer")
+    public void kafkaConsumer() {
+        Message<String> msg = MessageBuilder.withPayload("Hello, Kafka consumer.").build();
+        streamBridge.send("kafkaConsumer-out-0", msg);
+    }
+
 }

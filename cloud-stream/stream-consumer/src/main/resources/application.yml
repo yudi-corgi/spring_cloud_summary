@@ -16,7 +16,7 @@ spring:
     # 注意：因为是将整个 value 当作值用分号进行分割，不要强迫症加上空格
     # 比如：stringConsumer; stringSupplier，这样分割后是会把 stringSupplier 前面的空格也当作函数处理器名称的一部分
     function:
-      definition: stringConsumer;stringSupplier;msgPrinter;deadLetterConsumer;delayConsumer;rabbit2Consumer
+      definition: stringConsumer;stringSupplier;msgPrinter;deadLetterConsumer;delayConsumer;rabbit2Consumer;kafkaConsumer
     stream:
       # 默认使用的 Binder
       default-binder: rabbit1
@@ -40,6 +40,16 @@ spring:
                 username: admin
                 password: corgi123
                 port: 5682
+        kafka1:
+          type: kafka
+          environment:
+            spring:
+              cloud:
+                stream:
+                  kafka:
+                    binder:
+                      brokers: 116.205.181.47:9092
+                      auto-create-topics: true
       rabbit:
         bindings:
           stringSupplier-in-0:
@@ -128,3 +138,7 @@ spring:
           destination: rabbit-topic
           group: rabbit-queue
           binder: rabbit2
+        kafkaConsumer-in-0:
+          destination: test-topic
+          content-type: application/json
+          binder: kafka1

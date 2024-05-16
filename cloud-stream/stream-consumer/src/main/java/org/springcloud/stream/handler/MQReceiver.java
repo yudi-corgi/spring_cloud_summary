@@ -102,4 +102,13 @@ public class MQReceiver {
     public Consumer<Message<String>> rabbit2Consumer() {
         return (msg) -> System.out.println(msg.getPayload());
     }
+
+    @Bean
+    public Consumer<Message<String>> kafkaConsumer() {
+        return (msg) -> {
+            System.out.println("Kafka 消费：" + msg.getPayload());
+            msg.getHeaders().forEach((k, v) -> System.out.println(k + ": " + v));
+        };
+    }
+
 }
