@@ -12,3 +12,6 @@ GET localhost:8090/send/delay
 
 ### 发送给第二个 binder
 GET localhost:8090/send/sendAnother
+
+### 测试生产消息预创建队列
+GET localhost:8090/send/prepare

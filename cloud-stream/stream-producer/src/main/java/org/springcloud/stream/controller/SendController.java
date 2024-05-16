@@ -68,4 +68,10 @@ public class SendController {
         streamBridge.send("rabbit2Consumer-out-0", msg);
     }
 
+    @GetMapping("/prepare")
+    public void prepare() {
+        Message<String> msg = MessageBuilder.withPayload("Hello, prepare queue.").build();
+        streamBridge.send("prepareQueue-out-0", msg);
+    }
+
 }

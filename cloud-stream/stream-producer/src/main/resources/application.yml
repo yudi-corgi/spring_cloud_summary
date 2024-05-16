@@ -110,3 +110,11 @@ spring:
           destination: rabbit-topic
           # 指定要使用的 Binder
           binder: rabbit2
+        prepareQueue-out-0:
+          destination: prepare-topic
+          binder: rabbit2
+          producer:
+            # 预先创建的队列，Stream 关于队列默认是等到使用时才创建
+            # 若不配置此项，那么当消费者未部署时，发送到此绑定的所有消息将丢失（也就是只有交换机，而没有绑定队列）
+            required-groups:
+              - prepare-queue
