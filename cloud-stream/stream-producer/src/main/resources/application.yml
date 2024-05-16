@@ -4,12 +4,14 @@ server:
 spring:
   application:
     name: stream-producer
-  # rabbitmq:
+ # kafka:
+ #   bootstrap-servers: localhost:9092
+ #  rabbitmq:
       # 确认机制需要依靠 Spring AMQP 实现，Stream 并不提供，Binder 本身使用的也是 Spring Boot 的 Connection Factory
       # Stream 支持 Spring AMQP 的所有配置
   #   publisher-returns: true
   #   publisher-confirm-type: simple
-  #   host: 116.205.181.47
+  #   host: localhost
   #   username: admin
   #   password: corgi123
   #   port: 5672
@@ -51,6 +53,16 @@ spring:
                 username: admin
                 password: corgi123
                 port: 5682
+        kafka:
+          type: kafka
+          environment:
+            spring:
+              cloud:
+                stream:
+                  kafka:
+                    binder:
+                      brokers: 116.205.181.47:9092
+                      auto-create-topics: true
       rabbit:
         bindings:
           stringConsumer-out-0:
