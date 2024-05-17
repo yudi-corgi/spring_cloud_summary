@@ -63,6 +63,9 @@ spring:
                     binder:
                       brokers: 116.205.181.47:9092
                       auto-create-topics: true
+                      auto-add-partitions: true
+                      # 创建的主题最小分区数，默认 1，必须上面两个属性都为 true
+                      min-partition-count: 3
       rabbit:
         bindings:
           stringConsumer-out-0:
@@ -131,5 +134,5 @@ spring:
             required-groups:
               - prepare-queue
         kafkaConsumer-out-0:
-          destination: test-topic
+          destination: evil-topic
           binder: kafka

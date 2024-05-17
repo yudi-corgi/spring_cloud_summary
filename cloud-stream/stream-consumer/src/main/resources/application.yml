@@ -4,8 +4,10 @@ server:
 spring:
   application:
     name: stream-consumer
+  # kafka:
+  #   bootstrap-servers: localhost:9092
   # rabbitmq:
-  #   host: 116.205.181.47
+  #   host: localhost
   #   username: admin
   #   password: admin123
   #   port: 5672
@@ -40,7 +42,7 @@ spring:
                 username: admin
                 password: corgi123
                 port: 5682
-        kafka1:
+        kafka:
           type: kafka
           environment:
             spring:
@@ -49,7 +51,6 @@ spring:
                   kafka:
                     binder:
                       brokers: 116.205.181.47:9092
-                      auto-create-topics: true
       rabbit:
         bindings:
           stringSupplier-in-0:
@@ -139,6 +140,6 @@ spring:
           group: rabbit-queue
           binder: rabbit2
         kafkaConsumer-in-0:
-          destination: test-topic
+          destination: evil-topic
           content-type: application/json
-          binder: kafka1
+          binder: kafka

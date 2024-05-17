@@ -15,3 +15,6 @@ GET localhost:8090/send/sendAnother
 
 ### 测试生产消息预创建队列
 GET localhost:8090/send/prepare
+
+### 发送消息至 Kafka
+GET localhost:8090/send/kafka/consumer
