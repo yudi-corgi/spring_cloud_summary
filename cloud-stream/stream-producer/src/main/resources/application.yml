@@ -87,6 +87,12 @@ spring:
               delayed-exchange: true
               # 消息延迟时间的计算 SpEL，消息延迟 header 属性是 x-delay，单位 ms
               delay-expression: "headers['first'] == 1 ? 2000 : 3000"
+      # Kafka 的相关绑定配置写在这，具体有哪些属性可看官方文档或者点击 bindings 属性查看源码
+      kafka:
+        bindings:
+          kafkaConsumer-out-0:
+            producer:
+              compression-type: lz4
       function:
         # 为绑定声明别名
         bindings:
