@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
 import java.time.LocalDateTime;
+import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * @author YUDI-Corgi
@@ -20,6 +21,8 @@ public class SendController {
 
     @Resource
     private StreamBridge streamBridge;
+    @Resource
+    private AtomicInteger index;
 
     @GetMapping("/test")
     public void test(String name) {
@@ -78,6 +81,14 @@ public class SendController {
     public void kafkaConsumer() {
         Message<String> msg = MessageBuilder.withPayload("Hello, Kafka consumer.").build();
         streamBridge.send("kafkaConsumer-out-0", msg);
+    }
+
+    @GetMapping("/partitioned")
+    public void partitioned() {
+        Message<String> msg = MessageBuilder.withPayload("Hello, partitioned consumer.")
+                .setHeader("index", index.incrementAndGet())
+                .build();
+        streamBridge.send("partitionedConsumer-out-0", msg);
     }
 
 }

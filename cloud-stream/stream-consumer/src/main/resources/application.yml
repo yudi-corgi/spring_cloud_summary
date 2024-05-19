@@ -18,7 +18,7 @@ spring:
     # 注意：因为是将整个 value 当作值用分号进行分割，不要强迫症加上空格
     # 比如：stringConsumer; stringSupplier，这样分割后是会把 stringSupplier 前面的空格也当作函数处理器名称的一部分
     function:
-      definition: stringConsumer;stringSupplier;msgPrinter;deadLetterConsumer;delayConsumer;rabbit2Consumer;kafkaConsumer
+      definition: stringConsumer;stringSupplier;msgPrinter;deadLetterConsumer;delayConsumer;rabbit2Consumer;kafkaConsumer;partitionedConsumer
     stream:
       # 默认使用的 Binder
       default-binder: rabbit1
@@ -143,3 +143,14 @@ spring:
           destination: evil-topic
           content-type: application/json
           binder: kafka
+        partitionedConsumer-in-0:
+          destination: partitioned-topic
+          group: partitioned-queue
+          binder: rabbit2
+          consumer:
+            # 是否从分区生产者获取消息，使用该属性表示消费者开启分区功能
+            partitioned: true
+            # 指定应用程序部署的数量，2 表示有两个实例
+            instance-count: 2
+            # 该属性指示当前实例的索引，生产者发送消息时指定的分区索引与此相同，则消息会被此消费者消费
+            instance-index: 1

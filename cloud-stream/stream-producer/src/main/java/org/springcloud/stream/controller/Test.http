@@ -18,3 +18,7 @@ GET localhost:8090/send/prepare
 
 ### 发送消息至 Kafka
 GET localhost:8090/send/kafka/consumer
+
+### 发送分区消息
+GET localhost:8090/send/partitioned
+

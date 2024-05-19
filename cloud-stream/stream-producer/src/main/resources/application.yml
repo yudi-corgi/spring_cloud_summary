@@ -139,6 +139,18 @@ spring:
             # 若不配置此项，那么当消费者未部署时，发送到此绑定的所有消息将丢失（也就是只有交换机，而没有绑定队列）
             required-groups:
               - prepare-queue
+        # Kafka 绑定
         kafkaConsumer-out-0:
           destination: evil-topic
           binder: kafka
+        # 分区绑定
+        partitionedConsumer-out-0:
+          destination: partitioned-topic
+          binder: rabbit2
+          producer:
+            # 该绑定通道的分区数
+            partition-count: 2
+            # 分区键，通过该 Key 决定路由的分区，分区计算方式默认是：{SpEL 计算结果 % partition-count}
+            partition-key-expression: headers.index
+            # 自定义使用的分区 Key，需要实现 PartitionKeyExtractorStrategy 接口，并在此配置 Bean 名称
+            # partition-key-extractor-name:
