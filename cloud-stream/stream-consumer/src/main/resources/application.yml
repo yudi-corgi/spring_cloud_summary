@@ -104,6 +104,9 @@ spring:
               queue-name-group-only: true
               # 需要 RabbitMQ 开启 rabbitmq_delayed_message_exchange 插件
               delayed-exchange: true
+          partitionedConsumer-in-0:
+            consumer:
+              queue-name-group-only: true
       bindings:
         # 绑定：msgPrinter-in-0 是绑定名称，in 表示它是输入（Consumer），consumer-topic 是交换机
         # group 表示队列名称用 {destination}.{group} 的方式拼接而成，否则为 {destination}.{随机字符}
