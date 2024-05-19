@@ -151,6 +151,7 @@ spring:
             # 是否从分区生产者获取消息，使用该属性表示消费者开启分区功能
             partitioned: true
             # 指定应用程序部署的数量，2 表示有两个实例
+            # 创建的队列也会有两个，默认名称：{destination}.{group}-{index}，默认路由键：{partitioned}-{index}
             instance-count: 2
             # 该属性指示当前实例的索引，生产者发送消息时指定的分区索引与此相同，则消息会被此消费者消费
-            instance-index: 1
+            instance-index: 0

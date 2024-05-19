@@ -151,6 +151,12 @@ spring:
             # 该绑定通道的分区数
             partition-count: 2
             # 分区键，通过该 Key 决定路由的分区，分区计算方式默认是：{SpEL 计算结果 % partition-count}
-            partition-key-expression: headers.index
+            # partition-key-expression: headers.index
+            # 分区 ID 选择 SpEL，与分区键搭配使用，在计算分区 ID 时使用，若不指定，则默认取分区键的哈希值取模计算分区 ID 了
+            # partition-selector-expression:
             # 自定义使用的分区 Key，需要实现 PartitionKeyExtractorStrategy 接口，并在此配置 Bean 名称
-            # partition-key-extractor-name:
+            partition-key-extractor-name: customKeyExtractorStrategy
+            # 自定义分区 ID 选择策略，需要实现 PartitionSelectorStrategy 接口，并在此配置 Bean 名称
+            # 与 partition-key-extractor-name 搭配使用，并且两者都与 partition-key-expression 参数互斥
+            partition-selector-name: customSelectorStrategy
+

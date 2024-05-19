@@ -86,7 +86,8 @@ public class SendController {
     @GetMapping("/partitioned")
     public void partitioned() {
         Message<String> msg = MessageBuilder.withPayload("Hello, partitioned consumer.")
-                .setHeader("index", index.incrementAndGet())
+                // .setHeader("index", index.incrementAndGet())
+                .setHeader("partition-index", index.incrementAndGet())
                 .build();
         streamBridge.send("partitionedConsumer-out-0", msg);
     }
