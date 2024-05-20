@@ -5,7 +5,9 @@ import org.springframework.messaging.Message;
 import org.springframework.messaging.support.MessageBuilder;
 import org.springframework.stereotype.Component;
 import reactor.core.publisher.Flux;
+import reactor.core.publisher.UnicastProcessor;
 import reactor.util.function.Tuple2;
+import reactor.util.function.Tuples;
 
 import java.util.function.Function;
 import java.util.function.Supplier;
@@ -56,6 +58,23 @@ public class MQProducer {
             System.out.println("数据通道一：" + t1 + "，数据通道二：" + t2);
             // 这里是将两个通道的数据连接在一起
             return Flux.combineLatest(t1, t2, (k1, k2) -> k1 + k2.toString());
+        };
+    }
+
+    /**
+     * 多输出通道
+     * @return String + String
+     */
+    @Bean
+    public static Function<Flux<Integer>, Tuple2<Flux<String>, Flux<String>>> multipleScatter() {
+        return flux -> {
+            Flux<Integer> connectedFlux = flux.publish().autoConnect(2);
+            UnicastProcessor even = UnicastProcessor.create();
+            UnicastProcessor odd = UnicastProcessor.create();
+            Flux<Integer> evenFlux = connectedFlux.filter(number -> number % 2 == 0).doOnNext(number -> even.onNext("EVEN: " + number));
+            Flux<Integer> oddFlux = connectedFlux.filter(number -> number % 2 != 0).doOnNext(number -> odd.onNext("ODD: " + number));
+
+            return Tuples.of(Flux.from(even).doOnSubscribe(x -> evenFlux.subscribe()), Flux.from(odd).doOnSubscribe(x -> oddFlux.subscribe()));
         };
     }
 

@@ -10,7 +10,7 @@ GET localhost:8090/send/lower
 ### 延迟消息
 GET localhost:8090/send/delay
 
-### 发送给第二个 binder
+### 发送给第二个 RabbitMQ binder
 GET localhost:8090/send/sendAnother
 
 ### 测试生产消息预创建队列
@@ -22,6 +22,9 @@ GET localhost:8090/send/kafka/consumer
 ### 发送分区消息
 GET localhost:8090/send/partitioned
 
-### 发送多通道消息
-GET localhost:8090/send/multiple
+### 发送多输入通道消息
+GET localhost:8090/send/multipleInput
+
+### 发送多输出通道消息
+GET localhost:8090/send/multipleOutput
 

@@ -29,7 +29,7 @@ spring:
       # 声明检查的函数处理器，| 管道符表示连接处理器
       # addDash 和 toTrim 都是 Function 类型，表示前者的输出会作为后者的输入
       # 在这里的示例中，toTrim 的输出指向了 allPrinter 的输入，因此会被其消费
-      definition: stringSupplier;toUpperCase;addDash|toTrim;allPrinter;multipleGather;gatherConsumer
+      definition: stringSupplier;toUpperCase;addDash|toTrim;allPrinter;multipleGather;gatherConsumer;multipleScatter;scatterConsumerOne;scatterConsumerTwo
     stream:
       # 默认使用的 Binder
       default-binder: rabbit1
@@ -161,11 +161,11 @@ spring:
             partition-selector-name: customSelectorStrategy
         # 多输入通道
         multipleGather-in-0:
-          destination: multiple-topic
+          destination: multiple-input-topic
           group: multiple-channel-queue
           binder: rabbit2
         multipleGather-in-1:
-          destination: multiple-topic
+          destination: multiple-input-topic
           group: multiple-channel-queue
           binder: rabbit2
         multipleGather-out-0:
@@ -176,3 +176,21 @@ spring:
           group: gather-consumer-queue
           binder: rabbit2
         # 多输出通道
+        multipleScatter-in-0:
+          destination: multiple-output-topic
+          group: multiple-output-queue
+          binder: rabbit2
+        multipleScatter-out-0:
+          destination: scatter-consumer-one-topic
+          binder: rabbit2
+        multipleScatter-out-1:
+          destination: scatter-consumer-two-topic
+          binder: rabbit2
+        scatterConsumerOne-in-0:
+          destination: scatter-consumer-one-topic
+          group: scatter-consumer-one-queue
+          binder: rabbit2
+        scatterConsumerTwo-in-0:
+          destination: scatter-consumer-two-topic
+          group: scatter-consumer-two-queue
+          binder: rabbit2
