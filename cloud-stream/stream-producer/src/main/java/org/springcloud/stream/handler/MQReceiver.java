@@ -19,8 +19,6 @@ public class MQReceiver {
 
     @Bean
     public Consumer<Message<String>> gatherConsumer() {
-        return msg -> {
-            System.out.println("多通道整合后的数据：" + msg.getPayload());
-        };
+        return msg -> System.out.println("多通道整合后的数据：" + msg.getPayload());
     }
 }

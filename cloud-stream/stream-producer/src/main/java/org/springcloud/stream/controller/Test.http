@@ -22,3 +22,6 @@ GET localhost:8090/send/kafka/consumer
 ### 发送分区消息
 GET localhost:8090/send/partitioned
 
+### 发送多通道消息
+GET localhost:8090/send/multiple
+

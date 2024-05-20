@@ -96,6 +96,7 @@ public class SendController {
     public void multiple() {
         Message<String> msg1 = MessageBuilder.withPayload("Hello, multiple channel.").build();
         Message<Integer> msg2 = MessageBuilder.withPayload(index.getAndIncrement()).build();
+        // 使用多输入通道时，需要向所有输入绑定都发送了消息才会被消费者函数处理
         streamBridge.send("multipleGather-in-0", msg1);
         streamBridge.send("multipleGather-in-1", msg2);
     }
