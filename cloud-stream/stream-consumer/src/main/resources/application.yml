@@ -18,7 +18,7 @@ spring:
     # 注意：因为是将整个 value 当作值用分号进行分割，不要强迫症加上空格
     # 比如：stringConsumer; stringSupplier，这样分割后是会把 stringSupplier 前面的空格也当作函数处理器名称的一部分
     function:
-      definition: stringConsumer;stringSupplier;msgPrinter;deadLetterConsumer;delayConsumer;rabbit2Consumer;kafkaConsumer;partitionedConsumer
+      definition: stringConsumer;stringSupplier;msgPrinter;deadLetterConsumer;delayConsumer;rabbit2Consumer;kafkaConsumer;partitionedConsumer;gatherConsumer;scatterConsumerOne;scatterConsumerTwo
     stream:
       # 默认使用的 Binder
       default-binder: rabbit1
@@ -107,6 +107,15 @@ spring:
           partitionedConsumer-in-0:
             consumer:
               queue-name-group-only: true
+          gatherConsumer-in-0:
+            consumer:
+              queue-name-group-only: true
+          scatterConsumerOne-in-0:
+            consumer:
+              queue-name-group-only: true
+          scatterConsumerTwo-in-0:
+            consumer:
+              queue-name-group-only: true
       bindings:
         # 绑定：msgPrinter-in-0 是绑定名称，in 表示它是输入（Consumer），consumer-topic 是交换机
         # group 表示队列名称用 {destination}.{group} 的方式拼接而成，否则为 {destination}.{随机字符}
@@ -158,3 +167,17 @@ spring:
             instance-count: 2
             # 该属性指示当前实例的索引（也叫分区 ID），生产者发送消息时指定的分区索引与此相同，则消息会被此消费者消费
             instance-index: 0
+        # 2-输入 / 1-输出的消费者
+        gatherConsumer-in-0:
+          destination: gather-consumer-topic
+          group: gather-queue
+          binder: rabbit2
+        # 1-输入 / 2-输出的消费者
+        scatterConsumerOne-in-0:
+          destination: scatter-consumer-topic
+          group: scatter-one-queue
+          binder: rabbit2
+        scatterConsumerTwo-in-0:
+          destination: scatter-consumer-topic
+          group: scatter-two-queue
+          binder: rabbit2

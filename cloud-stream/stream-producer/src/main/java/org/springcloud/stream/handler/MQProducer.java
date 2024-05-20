@@ -62,19 +62,23 @@ public class MQProducer {
     }
 
     /**
-     * 多输出通道
+     * 多输出通道，官方示例
      * @return String + String
      */
     @Bean
-    public static Function<Flux<Integer>, Tuple2<Flux<String>, Flux<String>>> multipleScatter() {
+    public Function<Flux<Integer>, Tuple2<Flux<String>, Flux<String>>> multipleScatter() {
         return flux -> {
             Flux<Integer> connectedFlux = flux.publish().autoConnect(2);
+            // Sinks.UnicastSpec even = Sinks.many().unicast();
+            // Sinks.UnicastSpec odd = Sinks.many().unicast();
             UnicastProcessor even = UnicastProcessor.create();
             UnicastProcessor odd = UnicastProcessor.create();
             Flux<Integer> evenFlux = connectedFlux.filter(number -> number % 2 == 0).doOnNext(number -> even.onNext("EVEN: " + number));
             Flux<Integer> oddFlux = connectedFlux.filter(number -> number % 2 != 0).doOnNext(number -> odd.onNext("ODD: " + number));
 
-            return Tuples.of(Flux.from(even).doOnSubscribe(x -> evenFlux.subscribe()), Flux.from(odd).doOnSubscribe(x -> oddFlux.subscribe()));
+            // 由以下两者的对比可得出：多输出通道时，元组包含数据的顺序对应输出通道的顺序，可依此来确定数据要发送到哪个输出通道
+            // return Tuples.of(Flux.from(even).doOnSubscribe(x -> evenFlux.subscribe()), Flux.from(odd).doOnSubscribe(x -> oddFlux.subscribe()));
+            return Tuples.of(Flux.from(odd).doOnSubscribe(x -> oddFlux.subscribe()), Flux.from(even).doOnSubscribe(x -> evenFlux.subscribe()));
         };
     }
 

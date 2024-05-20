@@ -111,4 +111,21 @@ public class MQReceiver {
         };
     }
 
+    @Bean
+    public Consumer<Message<String>> gatherConsumer() {
+        return msg -> System.out.println("多输入通道整合后的数据：" + msg.getPayload());
+    }
+
+    @Bean
+    public Consumer<Message<String>> scatterConsumerOne() {
+        return msg -> {
+            System.out.println("多输出通道一：" + msg.getPayload());
+        };
+    }
+
+    @Bean
+    public Consumer<Message<String>> scatterConsumerTwo() {
+        return msg -> System.out.println("多输出通道二：" + msg.getPayload());
+    }
+
 }
