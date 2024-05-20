@@ -96,6 +96,13 @@ spring:
           multipleScatter-in-0:
             consumer:
               queue-name-group-only: true
+          # 指定两个输出通道不同的路由键，以便消息路由到不同队列
+          multipleScatter-out-0:
+            producer:
+              routing-key-expression: headers.rout
+          multipleScatter-out-1:
+            producer:
+              routing-key-expression: headers.rout
       # Kafka 的相关绑定配置写在这，具体有哪些属性可看官方文档或者点击 bindings 属性查看源码
       kafka:
         bindings:

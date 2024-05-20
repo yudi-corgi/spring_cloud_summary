@@ -110,12 +110,15 @@ spring:
           gatherConsumer-in-0:
             consumer:
               queue-name-group-only: true
+          # 两个消费者指定不同的路由 Key 以消费不同的队列
           scatterConsumerOne-in-0:
             consumer:
               queue-name-group-only: true
+              binding-routing-key: one
           scatterConsumerTwo-in-0:
             consumer:
               queue-name-group-only: true
+              binding-routing-key: two
       bindings:
         # 绑定：msgPrinter-in-0 是绑定名称，in 表示它是输入（Consumer），consumer-topic 是交换机
         # group 表示队列名称用 {destination}.{group} 的方式拼接而成，否则为 {destination}.{随机字符}

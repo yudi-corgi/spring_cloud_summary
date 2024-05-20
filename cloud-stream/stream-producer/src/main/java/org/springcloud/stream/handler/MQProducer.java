@@ -66,7 +66,7 @@ public class MQProducer {
      * @return String + String
      */
     @Bean
-    public Function<Flux<Integer>, Tuple2<Flux<String>, Flux<String>>> multipleScatter() {
+    public Function<Flux<Integer>, Tuple2<Flux<Message<String>>, Flux<Message<String>>>> multipleScatter() {
         return flux -> {
             Flux<Integer> connectedFlux = flux.publish().autoConnect(2);
             // Sinks.UnicastSpec even = Sinks.many().unicast();
@@ -78,7 +78,24 @@ public class MQProducer {
 
             // 由以下两者的对比可得出：多输出通道时，元组包含数据的顺序对应输出通道的顺序，可依此来确定数据要发送到哪个输出通道
             // return Tuples.of(Flux.from(even).doOnSubscribe(x -> evenFlux.subscribe()), Flux.from(odd).doOnSubscribe(x -> oddFlux.subscribe()));
-            return Tuples.of(Flux.from(odd).doOnSubscribe(x -> oddFlux.subscribe()), Flux.from(even).doOnSubscribe(x -> evenFlux.subscribe()));
+            // return Tuples.of(Flux.from(odd).doOnSubscribe(x -> oddFlux.subscribe()), Flux.from(even).doOnSubscribe(x -> evenFlux.subscribe()));
+
+            // 这里只是演示下如何从 Flux 中提取数据为消息设置路由 Key
+            Flux oddWithKey = Flux.from(odd).doOnSubscribe(x -> oddFlux.subscribe())
+                    .map(data -> {
+                        Message<Object> build = MessageBuilder.withPayload(data)
+                                .setHeader("rout", "one").build();
+                        System.out.println(build);
+                        return build;
+                    });
+            Flux evenWithKey = Flux.from(even).doOnSubscribe(x -> evenFlux.subscribe())
+                    .map(data -> {
+                        Message<Object> build = MessageBuilder.withPayload(data)
+                                .setHeader("rout", "two").build();
+                        System.out.println(build);
+                        return build;
+                    });
+            return Tuples.of(oddWithKey, evenWithKey);
         };
     }
 

@@ -120,12 +120,16 @@ public class MQReceiver {
     public Consumer<Message<String>> scatterConsumerOne() {
         return msg -> {
             System.out.println("多输出通道一：" + msg.getPayload());
+            System.out.println("通道路由 Key：" + msg.getHeaders().get("rout"));
         };
     }
 
     @Bean
     public Consumer<Message<String>> scatterConsumerTwo() {
-        return msg -> System.out.println("多输出通道二：" + msg.getPayload());
+        return msg -> {
+            System.out.println("多输出通道二：" + msg.getPayload());
+            System.out.println("通道路由 Key：" + msg.getHeaders().get("rout"));
+        };
     }
 
 }
