@@ -92,4 +92,12 @@ public class SendController {
         streamBridge.send("partitionedConsumer-out-0", msg);
     }
 
+    @GetMapping("/multiple")
+    public void multiple() {
+        Message<String> msg1 = MessageBuilder.withPayload("Hello, multiple channel.").build();
+        Message<Integer> msg2 = MessageBuilder.withPayload(index.getAndIncrement()).build();
+        streamBridge.send("multipleGather-in-0", msg1);
+        streamBridge.send("multipleGather-in-1", msg2);
+    }
+
 }
