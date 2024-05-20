@@ -33,7 +33,7 @@
 - [x] Seata
 
 #### 消息路由
-- [ ] Stream-RabbitMQ
+- [x] Stream-RabbitMQ
 
 #### 服务追踪
 - [x] Sleuth 
