@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
 import java.time.LocalDateTime;
+import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 
 /**
@@ -98,6 +99,12 @@ public class SendController {
         Message<Integer> msg2 = MessageBuilder.withPayload(index.getAndIncrement()).build();
         // 使用多输入通道时，需要向所有输入绑定都发送了消息才会被消费者函数处理
         streamBridge.send("multipleGather-in-0", msg1);
+        try {
+            System.out.println("休眠 3 秒.");
+            TimeUnit.SECONDS.sleep(3);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
         streamBridge.send("multipleGather-in-1", msg2);
     }
 
