@@ -33,7 +33,10 @@
 - [x] Seata
 
 #### 消息路由
-- [x] Stream-RabbitMQ
+- [x] Stream
+  - Binder / MQ 基础配置示例
+  - RabbitMQ / Kafka Binder 配置示例
+  - Rabbit MQ 延迟、死信、分区、多输入/多输出通道演示
 
 #### 服务追踪
 - [x] Sleuth 
