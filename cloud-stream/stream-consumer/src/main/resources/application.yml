@@ -138,6 +138,8 @@ spring:
             back-off-initial-interval: 1000
             back-off-max-interval: 10000
             back-off-multiplier: 2.0
+            # 消息消费的并发线程数，默认 1，交换机类型为 direct 时不可用，线程名称：{group}-{1..count}
+            concurrency: 2
         stringSupplier-in-0:
           destination: supplier-topic
           group: supplier-demo

@@ -22,18 +22,22 @@ public class MQReceiver {
     @Bean
     public Consumer<Message<Object>> stringConsumer() {
         return (obj) -> {
+            Thread currentThread = Thread.currentThread();
+            System.out.println("当前线程名称：" + currentThread.getName());
+            System.out.println("当前线程 ID：" + currentThread.getId());
             System.out.println("消息消费：" + obj.getPayload());
             MessageHeaders headers = obj.getHeaders();
 
             Channel amqpChannel = headers.get(AmqpHeaders.CHANNEL, Channel.class);
             Long amqpDeliveryTag = headers.get(AmqpHeaders.DELIVERY_TAG, Long.class);
 
-            int a = 1/0;
+            // int a = 1/0;
 
             try {
-                // 拒绝 ack 且不重入队列，构造死信消息
                 assert amqpChannel != null;
-                amqpChannel.basicNack(Optional.ofNullable(amqpDeliveryTag).orElse(1L), false, false);
+                // 拒绝 ack 且不重入队列，构造死信消息
+                // amqpChannel.basicNack(Optional.ofNullable(amqpDeliveryTag).orElse(1L), false, false);
+                amqpChannel.basicAck(Optional.ofNullable(amqpDeliveryTag).orElse(1L), false);
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
