@@ -26,9 +26,18 @@
 - [x] Config 
 - [x] Bus
 - [x] Nacos
+- [ ] Consul
+- [ ] Apollo
+  - 在该模块简单添加了 DeferredResult 使用示例，因为 Apollo 客户端与服务端的长连接便是基于此实现
 
 #### 分布式事务
 - [x] Seata
+
+#### 消息路由
+- [x] Stream（v3.2.9）
+  - Binder / MQ 基础配置示例
+  - RabbitMQ / Kafka Binder 配置示例
+  - Rabbit MQ 延迟、死信、分区、多输入/多输出通道示例
 
 #### 服务追踪
 - [x] Sleuth 

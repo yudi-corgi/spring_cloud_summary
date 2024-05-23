@@ -10,8 +10,13 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-@SpringBootApplication
+/**
+ * 由于 Spring Cloud 版本升级（👆2021.0.8），Gateway 关于 Hystrix 相关的配置换成了 Circuit Breaker 和 Resilience4J <br>
+ * 因此该类的降级配置是过时的，只是因为时间久远，所以临时做了调整以保证代码正确编译
+ */
+@Deprecated
 @RestController
+@SpringBootApplication
 public class GatewayApplication {
 
     public static void main(String[] args) {
@@ -38,11 +43,8 @@ public class GatewayApplication {
                 .route(r -> r.path("/customer/**")
                     .filters(f -> f.filter(new TimeFilter())
                             .addResponseHeader("X-Response-Name","yudi")
-                            .hystrix(config ->
-                                    config.setName("HystrixCMD").setFallbackUri("forward:/nativeFallback")))
-                    .uri("https://example.org")
-                    .order(0).id("customer_timer_router")
-                ).build();
+                            .circuitBreaker(config -> config.setName("HystrixCMD").setFallbackUri("forward:/nativeFallback")))
+                    .uri("https://example.org")).build();
     }
 
     // 注册自定义过滤器工厂到 IOC
@@ -53,7 +55,7 @@ public class GatewayApplication {
 
     @RequestMapping("/nativeFallback")
     public String nativeFallback(){
-        return "Hystrix 熔断，本地方法调用。";
+        return "CircuitBreaker 熔断，本地方法调用。";
     }
 
 }

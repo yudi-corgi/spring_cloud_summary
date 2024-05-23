@@ -1,0 +1,14 @@
+server:
+  port: 8090
+
+spring:
+  application:
+    name: cloud-apollo
+  profiles:
+    active: dev
+
+##### Apollo 配置
+# appId - 应用唯一标识，用于 Apollo 客户端获取当前应用信息
+app:
+  id: ${spring.application.name}-${spring.profiles.active}
+

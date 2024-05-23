@@ -2,8 +2,6 @@ package com.springcloud.zipkinclientone.filter;
 
 import brave.Span;
 import brave.Tracer;
-import org.springframework.cloud.sleuth.instrument.web.TraceWebServletAutoConfiguration;
-import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.GenericFilterBean;
 
@@ -20,7 +18,6 @@ import java.io.IOException;
  * @date 2020/6/10 22:09
  */
 @Component
-@Order(TraceWebServletAutoConfiguration.TRACING_FILTER_ORDER+1)
 public class EasyFilter extends GenericFilterBean {
 
     private final Tracer tracer;

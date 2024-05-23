@@ -1,0 +1,30 @@
+### 测试
+GET localhost:8090/send/test?name=Hello,Word
+
+### Function 测试
+GET localhost:8090/send/upper
+
+### 测试
+GET localhost:8090/send/lower
+
+### 延迟消息
+GET localhost:8090/send/delay
+
+### 发送给第二个 RabbitMQ binder
+GET localhost:8090/send/sendAnother
+
+### 测试生产消息预创建队列
+GET localhost:8090/send/prepare
+
+### 发送消息至 Kafka
+GET localhost:8090/send/kafka/consumer
+
+### 发送分区消息
+GET localhost:8090/send/partitioned
+
+### 发送多输入通道消息
+GET localhost:8090/send/multipleInput
+
+### 发送多输出通道消息
+GET localhost:8090/send/multipleOutput
+

@@ -1,0 +1,188 @@
+server:
+  port: 8080
+
+spring:
+  application:
+    name: stream-consumer
+  # kafka:
+  #   bootstrap-servers: localhost:9092
+  # rabbitmq:
+  #   host: localhost
+  #   username: admin
+  #   password: admin123
+  #   port: 5672
+  cloud:
+    # 填写消息处理器名称（函数名），指定哪些 Consumer/Supplier/Function Bean 要作为消息处理器
+    # 因为 Stream 会自动检测以上三种类型的 Bean 并进行自动绑定，而实际当中可能并非所有 Bean 都要被检测并绑定
+    # 指定多个处理器时，用分号分割，若想合并多个处理器为一起，则用管道 | 拼接
+    # 注意：因为是将整个 value 当作值用分号进行分割，不要强迫症加上空格
+    # 比如：stringConsumer; stringSupplier，这样分割后是会把 stringSupplier 前面的空格也当作函数处理器名称的一部分
+    function:
+      definition: stringConsumer;stringSupplier;msgPrinter;deadLetterConsumer;delayConsumer;rabbit2Consumer;kafkaConsumer;partitionedConsumer;gatherConsumer;scatterConsumerOne;scatterConsumerTwo
+    stream:
+      # 默认使用的 Binder
+      default-binder: rabbit1
+      # 定义 Binder，类型 rabbit、kafka
+      binders:
+        rabbit1:
+          type: rabbit
+          environment:
+            spring:
+              rabbitmq:
+                host: 116.205.181.47
+                username: admin
+                password: admin123
+                port: 5672
+        rabbit2:
+          type: rabbit
+          environment:
+            spring:
+              rabbitmq:
+                host: 116.205.181.47
+                username: admin
+                password: corgi123
+                port: 5682
+        kafka:
+          type: kafka
+          environment:
+            spring:
+              cloud:
+                stream:
+                  kafka:
+                    binder:
+                      brokers: 116.205.181.47:9092
+      rabbit:
+        bindings:
+          stringSupplier-in-0:
+            consumer:
+              # 设置手动 ACK，注意：只有配置了这一项后，Consumer 才能在接收的 Message#headers 中取到 amqp_channel
+              acknowledge-mode: manual
+              # 未指定 group 时的匿名队列前缀，默认 anonymous，即 destination.anonymous.{base64 of UUID}
+              anonymous-group-prefix: ephemeral
+              # 只用 group 作为队列名，默认 destination.group
+              queue-name-group-only: true
+              # 绑定队列到目标交换机，默认 true
+              bind-queue: true
+              # 队列绑定交换机的路由键，默认 #
+              binding-routing-key: string-supplier-key,string-supplier-key-two
+              # binding-routing-key 指定了多个路由键时的分隔符，默认 null
+              binding-routing-key-delimiter: ","
+          stringConsumer-in-0:
+            consumer:
+              # 交换机及队列名称前缀
+              # prefix: string-consumer
+              acknowledge-mode: manual
+              # 交换机类型，默认 topic
+              exchange-type: direct
+              binding-routing-key: string-consumer-key
+              queue-name-group-only: true
+              # 该绑定的队列的消息过期时间，单位 ms
+              ttl: 5000
+              # 是否绑定 DLQ 到死信交换机，若未指定下面的 DLQ/DlX，则自动生成的死信交换机名称为 prefix + DLX（direct），死信队列为 {group}.dlq，路由键为 {group}
+              auto-bind-dlq: true
+              # 自定义死信交换机及其队列
+              dead-letter-exchange: dead-letter-topic
+              dead-letter-exchange-type: fanout
+              dead-letter-queue-name: dead-letter-queue
+              dead-letter-routing-key: dead-letter-key
+              dlq-ttl: 5000
+              # 超过重试失败后，消息会发入 DLQ，默认 true，会将错误堆栈信息放在消息 header 中
+              republish-to-dlq: true
+              # 指示除了错误堆栈信息外，消息其它 header 所能占用的字节大小，默认 20000
+              frame-max-headroom: 20000
+          # 消费死信队列数据的输入绑定配置，主要要完全跟上面死信信息的配置一致，因为死信交换机与队列创建时用的上方配置
+          # 但对于 deadLetterConsumer 来说，它根本不知道有死信这回事，它只会监听是否已有队列且有消息可进行消费
+          # 所以当声明的配置跟上方的死信不一致时，就会提示预期的配置信息与已存在的交换机（或队列）不一致
+          deadLetterConsumer-in-0:
+            consumer:
+              exchange-type: fanout
+              queue-name-group-only: true
+              binding-routing-key: dead-letter-key
+              ttl: 5000
+          delayConsumer-in-0:
+            consumer:
+              queue-name-group-only: true
+              # 需要 RabbitMQ 开启 rabbitmq_delayed_message_exchange 插件
+              delayed-exchange: true
+          partitionedConsumer-in-0:
+            consumer:
+              queue-name-group-only: true
+          gatherConsumer-in-0:
+            consumer:
+              queue-name-group-only: true
+          # 两个消费者指定不同的路由 Key 以消费不同的队列
+          scatterConsumerOne-in-0:
+            consumer:
+              queue-name-group-only: true
+              binding-routing-key: one
+          scatterConsumerTwo-in-0:
+            consumer:
+              queue-name-group-only: true
+              binding-routing-key: two
+      bindings:
+        # 绑定：msgPrinter-in-0 是绑定名称，in 表示它是输入（Consumer），consumer-topic 是交换机
+        # group 表示队列名称用 {destination}.{group} 的方式拼接而成，否则为 {destination}.{随机字符}
+        # 所有发送到 destination=msg-topic 都会由此消费者处理
+        msgPrinter-in-0:
+          destination: msg-topic
+          group: msg-printer
+        stringConsumer-in-0:
+          destination: consumer-topic
+          group: consumer-demo
+          content-type: application/json
+          consumer:
+            # 消息重试次数，默认 3（包括第一次的接收），设 1 表示禁止重试
+            max-attempts: 3
+            # 消息重试初始间隔、最大间隔、重试时间间隔的递增乘数，单位 ms，这三者搭配起来就是实现消息重试的指数退避
+            # 若要完整控制重试操作，可以注入 Bean RetryTemplate 进行自定义实现
+            back-off-initial-interval: 1000
+            back-off-max-interval: 10000
+            back-off-multiplier: 2.0
+            # 消息消费的并发线程数，默认 1，交换机类型为 direct 时不可用，线程名称：{group}-{1..count}
+            concurrency: 2
+        stringSupplier-in-0:
+          destination: supplier-topic
+          group: supplier-demo
+          content-type: application/json
+        deadLetterConsumer-in-0:
+          destination: dead-letter-topic
+          group: dead-letter-queue
+          content-type: application/json
+        delayConsumer-in-0:
+          destination: delay-topic
+          group: delay-queue
+          content-type: application/json
+        rabbit2Consumer-in-0:
+          destination: rabbit-topic
+          group: rabbit-queue
+          binder: rabbit2
+        kafkaConsumer-in-0:
+          destination: evil-topic
+          content-type: application/json
+          binder: kafka
+        partitionedConsumer-in-0:
+          destination: partitioned-topic
+          group: partitioned-queue
+          binder: rabbit2
+          consumer:
+            # 是否从分区生产者获取消息，使用该属性表示消费者开启分区功能
+            partitioned: true
+            # 指定应用程序部署的数量，2 表示有两个实例
+            # 创建的队列也会有两个，默认名称：{destination}.{group}-{index}，默认路由键：{partitioned}-{index}
+            instance-count: 2
+            # 该属性指示当前实例的索引（也叫分区 ID），生产者发送消息时指定的分区索引与此相同，则消息会被此消费者消费
+            instance-index: 0
+        # 2-输入 / 1-输出的消费者
+        gatherConsumer-in-0:
+          destination: gather-consumer-topic
+          group: gather-queue
+          binder: rabbit2
+        # 1-输入 / 2-输出的消费者
+        scatterConsumerOne-in-0:
+          destination: scatter-consumer-topic
+          group: scatter-one-queue
+          binder: rabbit2
+        scatterConsumerTwo-in-0:
+          destination: scatter-consumer-topic
+          group: scatter-two-queue
+          binder: rabbit2

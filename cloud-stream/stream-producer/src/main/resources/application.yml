@@ -1,0 +1,202 @@
+server:
+  port: 8090
+
+spring:
+  application:
+    name: stream-producer
+ # kafka:
+ #   bootstrap-servers: localhost:9092
+ #  rabbitmq:
+      # 确认机制需要依靠 Spring AMQP 实现，Stream 并不提供，Binder 本身使用的也是 Spring Boot 的 Connection Factory
+      # Stream 支持 Spring AMQP 的所有配置
+  #   publisher-returns: true
+  #   publisher-confirm-type: simple
+  #   host: localhost
+  #   username: admin
+  #   password: corgi123
+  #   port: 5672
+  # Supplier 全局轮询配置
+  # integration:
+  #   poller:
+      # cron: 1 * * * * ?          # CRON 表达式
+      # fixed-delay: 5s            # 固定延迟，与 fixed-rate、cron 互斥
+      # fixed-rate: 2s             # 固定频率，与 fixed-delay、cron 互斥
+      # initial-delay: 5           # 初始延迟，应用于 fixed-delay、fixed-rate，对 cron 无效
+      # max-messages-per-poll: 2   # 每次轮询的最大消息条数
+      # receive-timeout: 5s        # 接收超时时间
+  cloud:
+    function:
+      # 声明检查的函数处理器，| 管道符表示连接处理器
+      # addDash 和 toTrim 都是 Function 类型，表示前者的输出会作为后者的输入
+      # 在这里的示例中，toTrim 的输出指向了 allPrinter 的输入，因此会被其消费
+      definition: stringSupplier;toUpperCase;addDash|toTrim;allPrinter;multipleGather;multipleScatter;
+    stream:
+      # 默认使用的 Binder
+      default-binder: rabbit1
+      # 定义 Binder，类型 rabbit、kafka
+      binders:
+        rabbit1:
+          type: rabbit
+          environment:
+            spring:
+              rabbitmq:
+                host: 116.205.181.47
+                username: admin
+                password: admin123
+                port: 5672
+        rabbit2:
+          type: rabbit
+          environment:
+            spring:
+              rabbitmq:
+                host: 116.205.181.47
+                username: admin
+                password: corgi123
+                port: 5682
+        kafka:
+          type: kafka
+          environment:
+            spring:
+              cloud:
+                stream:
+                  kafka:
+                    binder:
+                      brokers: 116.205.181.47:9092
+                      auto-create-topics: true
+                      auto-add-partitions: true
+                      # 创建的主题最小分区数，默认 1，必须上面两个属性都为 true
+                      min-partition-count: 3
+      rabbit:
+        bindings:
+          stringConsumer-out-0:
+            producer:
+              # 设置交换机类型，默认 topic，可填 direct、fanout、headers
+              exchange-type: direct
+              # 指定固定的路由键，routing-key 在 3.2.x 版本不可用，只是提前暴露了属性配置而已
+              # 4.x 才可用，还是优先推荐用 routing-key-expression
+              # routing-key: string-consumer-key
+              # 指定路由键表达式 SpEL，这里的意思是 Message 的 Headers 属性 type 表示路由键
+              # 通过此来实现动态路由，当一个交换机有多个队列且路由键不同时
+              # 默认为 destination，也就是取交换机的名称作为路由键
+              routing-key-expression: headers.type
+          stringSupplier-out-0:
+            producer:
+              routing-key-expression: headers.routingKey
+          delayConsumer-out-0:
+            producer:
+              delayed-exchange: true
+              # 消息延迟时间的计算 SpEL，消息延迟 header 属性是 x-delay，单位 ms
+              delay-expression: "headers['first'] == 1 ? 2000 : 3000"
+          multipleGather-in-0:
+            consumer:
+              queue-name-group-only: true
+          multipleGather-in-1:
+            consumer:
+              queue-name-group-only: true
+          multipleScatter-in-0:
+            consumer:
+              queue-name-group-only: true
+          # 指定两个输出通道不同的路由键，以便消息路由到不同队列
+          multipleScatter-out-0:
+            producer:
+              routing-key-expression: headers.rout
+          multipleScatter-out-1:
+            producer:
+              routing-key-expression: headers.rout
+      # Kafka 的相关绑定配置写在这，具体有哪些属性可看官方文档或者点击 bindings 属性查看源码
+      kafka:
+        bindings:
+          kafkaConsumer-out-0:
+            producer:
+              compression-type: lz4
+      function:
+        # 为绑定声明别名
+        bindings:
+          addDash|toTrim-in-0: inTrimAndLowerCase
+          addDash|toTrim-out-0: outTrimAndLowerCase
+      bindings:
+        # 指定好组合 Function 与 Consumer 的输入输出通道
+        inTrimAndLowerCase:
+          destination: trim-lower-topic
+        outTrimAndLowerCase:
+          destination: printer-topic
+        allPrinter-in-0:
+          destination: printer-topic
+        # Function 配置，Function 包含输入输出，输出同样指定某个 Consumer#destination
+        toUpperCase-in-0:
+          destination: function-topic
+          group: upper-demo
+        toUpperCase-out-0:
+          destination: msg-topic
+        # Consumer 配置
+        stringConsumer-out-0:
+          destination: consumer-topic
+        delayConsumer-out-0:
+          destination: delay-topic
+        # Supplier 配置，Supplier 只负责输出（生产），因此 destination 指定某个 Consumer#destination 即可
+        stringSupplier-out-0:
+          destination: supplier-topic
+          # 该轮询配置只对 stringSupplier 绑定有效
+          producer:
+            poller:
+              fixed-delay: 1m            # 发送间隔，默认 1s
+          #     initial-delay: 1s           # 初始发送延迟时间，默认 0s，其下 units 属性可控制时间单位
+          #     max-messages-per-poll: 1    # 每次轮询发送的消息条数，默认 1 条
+          #     cron: 0/1 * * * * ?         # CRON 表达式指定发送周期，比 fixed-delay 优先级更高
+        rabbit2Consumer-out-0:
+          destination: rabbit-topic
+          # 指定要使用的 Binder
+          binder: rabbit2
+        prepareQueue-out-0:
+          destination: prepare-topic
+          binder: rabbit2
+          producer:
+            # 预先创建的队列，Stream 关于队列默认是等到使用时才创建
+            # 若不配置此项，那么当消费者未部署时，发送到此绑定的所有消息将丢失（也就是只有交换机，而没有绑定队列）
+            required-groups:
+              - prepare-queue
+        # Kafka 绑定
+        kafkaConsumer-out-0:
+          destination: evil-topic
+          binder: kafka
+        # 分区绑定
+        partitionedConsumer-out-0:
+          destination: partitioned-topic
+          binder: rabbit2
+          producer:
+            # 该绑定通道的分区数，生产者是否开启分区，是根据 partition-key-expression 或 partition-key-extractor-name 是否有值确定
+            partition-count: 2
+            # 分区键，通过该 Key 决定路由的分区，分区计算方式默认是：{SpEL 计算结果 % partition-count}
+            # partition-key-expression: headers.index
+            # 分区 ID 选择 SpEL，与分区键搭配使用，在计算分区 ID 时使用，若不指定，则默认取分区键的哈希值取模计算分区 ID 了
+            # partition-selector-expression:
+            # 自定义使用的分区 Key，需要实现 PartitionKeyExtractorStrategy 接口，并在此配置 Bean 名称
+            partition-key-extractor-name: customKeyExtractorStrategy
+            # 自定义分区 ID 选择策略，需要实现 PartitionSelectorStrategy 接口，并在此配置 Bean 名称
+            # 与 partition-key-extractor-name 搭配使用，并且两者都与 partition-key-expression 参数互斥
+            partition-selector-name: customSelectorStrategy
+        # 多输入通道
+        multipleGather-in-0:
+          destination: multiple-input-topic
+          group: multiple-input-queue
+          binder: rabbit2
+        multipleGather-in-1:
+          destination: multiple-input-topic
+          group: multiple-input-queue
+          binder: rabbit2
+        multipleGather-out-0:
+          destination: gather-consumer-topic
+          binder: rabbit2
+        # 多输出通道
+        multipleScatter-in-0:
+          destination: multiple-output-topic
+          group: multiple-output-queue
+          binder: rabbit2
+        multipleScatter-out-0:
+          destination: scatter-consumer-topic
+          group: scatter-one-queue
+          binder: rabbit2
+        multipleScatter-out-1:
+          destination: scatter-consumer-topic
+          group: scatter-two-queue
+          binder: rabbit2
