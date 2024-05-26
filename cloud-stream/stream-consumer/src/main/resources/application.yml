@@ -57,9 +57,9 @@ spring:
             consumer:
               # 设置手动 ACK，注意：只有配置了这一项后，Consumer 才能在接收的 Message#headers 中取到 amqp_channel
               acknowledge-mode: manual
-              # 未指定 group 时的匿名队列前缀，默认 anonymous，即 destination.anonymous.{base64 of UUID}
+              # 未指定 group 时的匿名队列前缀，默认 anonymous，即 {destination}.anonymous.{base64 of UUID}
               anonymous-group-prefix: ephemeral
-              # 只用 group 作为队列名，默认 destination.group
+              # 只用 group 作为队列名，默认 {destination}.{group}
               queue-name-group-only: true
               # 绑定队列到目标交换机，默认 true
               bind-queue: true
