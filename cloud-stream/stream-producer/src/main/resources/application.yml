@@ -66,6 +66,7 @@ spring:
                       auto-add-partitions: true
                       # 创建的主题最小分区数，默认 1，必须上面两个属性都为 true
                       min-partition-count: 3
+      # RabbitMQ 的相关绑定配置写在这
       rabbit:
         bindings:
           stringConsumer-out-0:
