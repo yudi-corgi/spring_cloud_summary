@@ -28,6 +28,8 @@ public class MQReceiver {
             System.out.println("消息消费：" + obj.getPayload());
             MessageHeaders headers = obj.getHeaders();
 
+            // 注意：要获取 Channel 对象除了开启手动 ACK 之外，发送消息时 StreamBridge 必须指定的是对应的输出绑定或动态目的地
+            // 如果指定输入绑定，那么获取的 MessageHeaders 将只有几个基础信息而已
             Channel amqpChannel = headers.get(AmqpHeaders.CHANNEL, Channel.class);
             Long amqpDeliveryTag = headers.get(AmqpHeaders.DELIVERY_TAG, Long.class);
 
