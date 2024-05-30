@@ -82,7 +82,7 @@ spring:
               max-length: 10
               # 指定队列所有消息的最大总字节数
               max-length-bytes: 1024
-              # 是否绑定 DLQ 到死信交换机，若未指定下面的 DLQ/DlX，则自动生成的死信交换机名称为 prefix + DLX（direct），死信队列为 {group}.dlq，路由键为 {group}
+              # 是否绑定 DLQ 到死信交换机，若未指定下面的 DLQ/DLX，则自动生成的死信交换机名称为 prefix + DLX（direct），死信队列为 {group}.dlq，路由键为 {group}
               auto-bind-dlq: true
               # 自定义死信交换机及其队列
               dead-letter-exchange: dead-letter-topic
