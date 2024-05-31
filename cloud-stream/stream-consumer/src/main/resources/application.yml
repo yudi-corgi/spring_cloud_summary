@@ -20,6 +20,9 @@ spring:
     function:
       definition: stringConsumer;stringSupplier;msgPrinter;deadLetterConsumer;delayConsumer;rabbit2Consumer;kafkaConsumer;partitionedConsumer;gatherConsumer;scatterConsumerOne;scatterConsumerTwo
     stream:
+      # 当前实例的分区数与分区索引，全局配置
+      # instance-count: 1
+      # instance-index: 0
       # 默认使用的 Binder
       default-binder: rabbit1
       # 定义 Binder，类型 rabbit、kafka
