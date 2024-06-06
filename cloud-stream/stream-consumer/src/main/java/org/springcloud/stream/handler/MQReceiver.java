@@ -84,17 +84,6 @@ public class MQReceiver {
         };
     }
 
-    /**
-     * SpringBoot 集成的 MQ 处理方法来处理死信消息
-     * @param msg 消息
-     */
-    // @RabbitListener(bindings = @QueueBinding(
-    //         value = @Queue(value = "consumer-demo.dlq"),
-    //         exchange = @Exchange("DLX"), key = "consumer-demo"))
-    public void handleDlq(org.springframework.amqp.core.Message msg) {
-        System.out.println(msg);
-    }
-
     @Bean
     public Consumer<Message<String>> delayConsumer() {
         return (msg) -> {
