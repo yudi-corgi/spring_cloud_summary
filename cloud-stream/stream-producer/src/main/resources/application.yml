@@ -40,7 +40,7 @@ spring:
           environment:
             spring:
               rabbitmq:
-                host: 116.205.181.47
+                host: localhost
                 username: admin
                 password: admin123
                 port: 5672
@@ -49,7 +49,7 @@ spring:
           environment:
             spring:
               rabbitmq:
-                host: 116.205.181.47
+                host: localhost
                 username: admin
                 password: corgi123
                 port: 5682
@@ -61,7 +61,7 @@ spring:
                 stream:
                   kafka:
                     binder:
-                      brokers: 116.205.181.47:9092
+                      brokers: localhost:9092
                       auto-create-topics: true
                       auto-add-partitions: true
                       # 创建的主题最小分区数，默认 1，必须上面两个属性都为 true
